@@ -1,0 +1,42 @@
+===== Log started at 2020-10-07, 10:19:48. =====
+
+10:19:48  Main window is created.
+10:19:48  Display Resolution: 1920x1080
+10:19:48  Creating a dummy window to use WGL_ARB_pixel_format extension.
+10:19:48  WGL_ARB_pixel_format and WGL_ARB_multisample are supported.
+10:19:48  Use wglChoosePixelFormatARB() to find a pixel format with MSAA.
+10:19:48  MSAA mode: 8x
+10:19:48  Pixel Format: 50
+10:19:48  A dummy window is destroyed.
+10:19:48  Created OpenGL rendering context for screen 1.
+10:19:48  Initialized OpenGL states. for screen 1.
+10:19:48  GLSL shader objects are initialized.
+10:19:48  Loaded OBJ models.
+10:19:49  Changed OpenGL rendering window size: 1920x1080 for screen 1.
+10:19:49  OpenGL rendering window 1 is created.
+10:19:49  Created OpenGL window for screen 2.
+10:19:49  Changed OpenGL rendering window size: 1920x1080 for screen 2.
+10:19:49  OpenGL rendering window 2 is created.
+10:19:49  Form dialog is created.
+10:19:49  Changed OpenGL rendering window size: 496x496 for screen 1.
+10:19:49  Changed OpenGL rendering window size: 496x496 for screen 2.
+10:19:49  Changed OpenGL rendering window size: 499x513 for screen 1.
+10:19:49  Changed OpenGL rendering window size: 499x513 for screen 2.
+10:19:49  Changed OpenGL rendering window size: 496x496 for screen 1.
+10:19:49  Changed OpenGL rendering window size: 496x496 for screen 2.
+10:19:49  Main window is open.
+
+10:20:21  Changed OpenGL rendering window size: 958x780 for screen 1.
+10:20:21  Changed OpenGL rendering window size: 958x780 for screen 2.
+10:20:23  Changed OpenGL rendering window size: 496x496 for screen 1.
+10:20:23  Changed OpenGL rendering window size: 496x496 for screen 2.
+10:20:24  Closing the application...
+10:20:24  Main windows is destroyed.
+10:20:24  Closed OpenGL rendering context for screen 1.
+10:20:24  OpenGL window is destroyed for screen 1.
+10:20:24  OpenGL window is destroyed for screen 2.
+10:20:24  Form dialog is destroyed.
+10:20:24  Application is terminated.
+
+
+===== END OF LOG =====
