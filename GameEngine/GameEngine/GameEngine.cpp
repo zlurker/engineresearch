@@ -6,6 +6,7 @@
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <thread>
 
 // Review again later
 #pragma comment(lib,"opengl32.lib")
@@ -13,15 +14,54 @@
 
 #define MAX_LOADSTRING 100
 
+
+class renderer {
+public:
+	void render() {
+		while (true) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+			// save the initial ModelView matrix before modifying ModelView matrix
+			glPushMatrix();
+
+			// tramsform camera
+			glTranslatef(0, 0, 20);
+			glRotatef(30, 1, 0, 0);   // pitch
+			glRotatef(40, 0, 1, 0);   // heading
+
+			// draw a triangle
+			glBegin(GL_TRIANGLES);
+			glNormal3f(0, 0, 1);
+			glColor3f(1, 0, 0);
+			glVertex3f(3, -2, 0);
+			glColor3f(0, 1, 0);
+			glVertex3f(0, 2, 0);
+			glColor3f(0, 0, 1);
+			glVertex3f(-3, -2, 0);
+			glEnd();
+
+			glPopMatrix();
+		}
+	}
+};
+
 // Global Variables:
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 HDC hdc;
 HGLRC hglrc;
+renderer* rend;
+std::thread thread;
 
 bool setPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
 int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
+void iniGL();
+void initLights();
+void setViewport(int w, int h);
+void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
 
 
 // Forward declarations of functions included in this code module:
@@ -31,42 +71,48 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR    lpCmdLine,
+	_In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
+	// TODO: Place code here.
 
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_GAMEENGINE, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
+	// Initialize global strings
+	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
+	LoadStringW(hInstance, IDC_GAMEENGINE, szWindowClass, MAX_LOADSTRING);
+	MyRegisterClass(hInstance);
 
-    // Perform application initialization:
-    if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
+	// Perform application initialization:
+	if (!InitInstance(hInstance, nCmdShow))
+	{
+		return FALSE;
+	}
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEENGINE));
+	
 
-    MSG msg;
+	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEENGINE));
 
-    // Main message loop:
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
+	MSG msg;
 
-    return (int) msg.wParam;
+	rend = new renderer();	
+	thread = std::thread(&renderer::render, rend);
+
+	// Main message loop:
+	while (GetMessage(&msg, nullptr, 0, 0))
+	{
+		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
+
+	return (int)msg.wParam;
 }
+
 
 
 
@@ -77,23 +123,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+	WNDCLASSEXW wcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
+	wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMEENGINE));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_GAMEENGINE);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WndProc;
+	wcex.cbClsExtra = 0;
+	wcex.cbWndExtra = 0;
+	wcex.hInstance = hInstance;
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMEENGINE));
+	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_GAMEENGINE);
+	wcex.lpszClassName = szWindowClass;
+	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);
+	return RegisterClassExW(&wcex);
 }
 
 //
@@ -108,115 +154,190 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
+	hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-   
-   if (!hWnd)
-   {
-      return FALSE;
-   }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	if (!hWnd)
+	{
+		return FALSE;
+	}
 
-   hdc = ::GetDC(hWnd);
-   if (!setPixelFormat(hdc, 32, 24, 8))
-   {
-       ::MessageBox(0, L"Cannot set a suitable pixel format.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-       ::ReleaseDC(hWnd, hdc);                     // remove device context
-       return false;
-   }
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 
-   hglrc = ::wglCreateContext(hdc);
-   ::ReleaseDC(hWnd, hdc);
+	hdc = ::GetDC(hWnd);
+	if (!setPixelFormat(hdc, 32, 24, 8))
+	{
+		::MessageBox(0, L"Cannot set a suitable pixel format.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+		::ReleaseDC(hWnd, hdc);                     // remove device context
+		return false;
+	}
 
-   ::MessageBox(0, L"Open GL Setup.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-   return TRUE;
+	hglrc = ::wglCreateContext(hdc);
+	::ReleaseDC(hWnd, hdc);
+
+	::MessageBox(0, L"Open GL Setup.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+
+	::wglMakeCurrent(hdc, hglrc);
+	iniGL();
+	RECT rect;
+
+	::GetClientRect(hWnd, &rect);
+	::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	setViewport(rect.right, rect.bottom);
+	::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	
+	return TRUE;
+}
+
+void setViewport(int w, int h) {// set viewport to be the entire window
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+
+	// set perspective viewing frustum
+	float aspectRatio = (float)w / h;
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0f, (float)(w) / h, 0.1f, 20.0f); // FOV, AspectRatio, NearClip, FarClip
+
+	// switch to modelview matrix in order to set scene
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void iniGL() {
+	glShadeModel(GL_SMOOTH);                        // shading mathod: GL_SMOOTH or GL_FLAT
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);          // 4-byte pixel alignment
+
+	// enable /disable features
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	//glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+
+	// track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+
+	glClearColor(0, 0, 0, 0);                       // background color
+	glClearStencil(0);                              // clear stencil buffer
+	glClearDepth(1.0f);                             // 0 is near, 1 is far
+	glDepthFunc(GL_LEQUAL);
+
+	initLights();
+	setCamera(0, 0, 10, 0, 0, 0);
+}
+
+void initLights()
+{
+	// set up light colors (ambient, diffuse, specular)
+	GLfloat lightKa[] = { .2f, .2f, .2f, 1.0f };      // ambient light
+	GLfloat lightKd[] = { .7f, .7f, .7f, 1.0f };      // diffuse light
+	GLfloat lightKs[] = { 1, 1, 1, 1 };               // specular light
+	glLightfv(GL_LIGHT0, GL_AMBIENT, lightKa);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightKd);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
+
+	// position the light
+	float lightPos[4] = { 0, 0, 20, 1 }; // positional light
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
+	glEnable(GL_LIGHT0);                            // MUST enable each light source after configuration
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// set camera position and lookat direction
+///////////////////////////////////////////////////////////////////////////////
+void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ)
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(posX, posY, posZ, targetX, targetY, targetZ, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
 }
 
 bool setPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
 {
-    PIXELFORMATDESCRIPTOR pfd;
+	PIXELFORMATDESCRIPTOR pfd;
 
-    // find out the best matched pixel format
-    int pixelFormat = findPixelFormat(hdc, colorBits, depthBits, stencilBits);
-    if (pixelFormat == 0)
-        return false;
+	// find out the best matched pixel format
+	int pixelFormat = findPixelFormat(hdc, colorBits, depthBits, stencilBits);
+	if (pixelFormat == 0)
+		return false;
 
-    // set members of PIXELFORMATDESCRIPTOR with given mode ID
-    ::DescribePixelFormat(hdc, pixelFormat, sizeof(pfd), &pfd);
+	// set members of PIXELFORMATDESCRIPTOR with given mode ID
+	::DescribePixelFormat(hdc, pixelFormat, sizeof(pfd), &pfd);
 
-    // set the fixel format
-    if (!::SetPixelFormat(hdc, pixelFormat, &pfd))
-        return false;
+	// set the fixel format
+	if (!::SetPixelFormat(hdc, pixelFormat, &pfd))
+		return false;
 
-    return true;
+	return true;
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // find the best pixel format
 ///////////////////////////////////////////////////////////////////////////////
 int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
 {
-    int currMode;                               // pixel format mode ID
-    int bestMode = 0;                           // return value, best pixel format
-    int currScore = 0;                          // points of current mode
-    int bestScore = 0;                          // points of best candidate
-    PIXELFORMATDESCRIPTOR pfd;
+	int currMode;                               // pixel format mode ID
+	int bestMode = 0;                           // return value, best pixel format
+	int currScore = 0;                          // points of current mode
+	int bestScore = 0;                          // points of best candidate
+	PIXELFORMATDESCRIPTOR pfd;
 
-    // search the available formats for the best mode
-    bestMode = 0;
-    bestScore = 0;
-    for (currMode = 1; ::DescribePixelFormat(hdc, currMode, sizeof(pfd), &pfd) > 0; ++currMode)
-    {
-        // ignore if cannot support opengl
-        if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL))
-            continue;
+	// search the available formats for the best mode
+	bestMode = 0;
+	bestScore = 0;
+	for (currMode = 1; ::DescribePixelFormat(hdc, currMode, sizeof(pfd), &pfd) > 0; ++currMode)
+	{
+		// ignore if cannot support opengl
+		if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL))
+			continue;
 
-        // ignore if cannot render into a window
-        if (!(pfd.dwFlags & PFD_DRAW_TO_WINDOW))
-            continue;
+		// ignore if cannot render into a window
+		if (!(pfd.dwFlags & PFD_DRAW_TO_WINDOW))
+			continue;
 
-        // ignore if cannot support rgba mode
-        if ((pfd.iPixelType != PFD_TYPE_RGBA) || (pfd.dwFlags & PFD_NEED_PALETTE))
-            continue;
+		// ignore if cannot support rgba mode
+		if ((pfd.iPixelType != PFD_TYPE_RGBA) || (pfd.dwFlags & PFD_NEED_PALETTE))
+			continue;
 
-        // ignore if not double buffer
-        if (!(pfd.dwFlags & PFD_DOUBLEBUFFER))
-            continue;
+		// ignore if not double buffer
+		if (!(pfd.dwFlags & PFD_DOUBLEBUFFER))
+			continue;
 
-        // try to find best candidate
-        currScore = 0;
+		// try to find best candidate
+		currScore = 0;
 
-        // colour bits
-        if (pfd.cColorBits >= colorBits) ++currScore;
-        if (pfd.cColorBits == colorBits) ++currScore;
+		// colour bits
+		if (pfd.cColorBits >= colorBits) ++currScore;
+		if (pfd.cColorBits == colorBits) ++currScore;
 
-        // depth bits
-        if (pfd.cDepthBits >= depthBits) ++currScore;
-        if (pfd.cDepthBits == depthBits) ++currScore;
+		// depth bits
+		if (pfd.cDepthBits >= depthBits) ++currScore;
+		if (pfd.cDepthBits == depthBits) ++currScore;
 
-        // stencil bits
-        if (pfd.cStencilBits >= stencilBits) ++currScore;
-        if (pfd.cStencilBits == stencilBits) ++currScore;
+		// stencil bits
+		if (pfd.cStencilBits >= stencilBits) ++currScore;
+		if (pfd.cStencilBits == stencilBits) ++currScore;
 
-        // alpha bits
-        if (pfd.cAlphaBits > 0) ++currScore;
+		// alpha bits
+		if (pfd.cAlphaBits > 0) ++currScore;
 
-        // check if it is best mode so far
-        if (currScore > bestScore)
-        {
-            bestScore = currScore;
-            bestMode = currMode;
-        }
-    }
+		// check if it is best mode so far
+		if (currScore > bestScore)
+		{
+			bestScore = currScore;
+			bestMode = currMode;
+		}
+	}
 
-    return bestMode;
+	return bestMode;
 }
 
 
@@ -226,7 +347,7 @@ int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
 ///////////////////////////////////////////////////////////////////////////////
 void swapBuffers()
 {
-    ::SwapBuffers(hdc);
+	::SwapBuffers(hdc);
 }
 
 //
@@ -241,58 +362,58 @@ void swapBuffers()
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+	switch (message)
+	{
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// Parse the menu selections:
+		switch (wmId)
+		{
+		case IDM_ABOUT:
+			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+			break;
+		case IDM_EXIT:
+			DestroyWindow(hWnd);
+			break;
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+	}
+	break;
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+		// TODO: Add any drawing code that uses hdc here...
+		EndPaint(hWnd, &ps);
+	}
+	break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	return 0;
 }
 
 // Message handler for about box.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
 }
