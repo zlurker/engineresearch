@@ -1,0 +1,6 @@
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  DialogWindow.cpp
+  
+glWin.exe.manifest : manifest authoring warning 81010002: Unrecognized Element "dpiAwareness" in namespace "http://schemas.microsoft.com/SMI/2016/WindowsSettings".
+  
+  glWin.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\glWin (1)\glWin\src\\..\bin\glWin.exe

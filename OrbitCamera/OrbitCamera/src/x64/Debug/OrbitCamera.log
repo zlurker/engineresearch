@@ -1,0 +1,30 @@
+﻿  animUtils.cpp
+  BitmapFont.cpp
+C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\OrbitCamera\OrbitCamera\src\BitmapFont.cpp(188,26): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\OrbitCamera\OrbitCamera\src\BitmapFont.cpp(188,18): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\OrbitCamera\OrbitCamera\src\BitmapFont.cpp(206,56): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\OrbitCamera\OrbitCamera\src\BitmapFont.cpp(207,54): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Controller.cpp
+  ControllerForm.cpp
+  ControllerGL1.cpp
+  ControllerGL2.cpp
+  ControllerMain.cpp
+  DialogWindow.cpp
+  glExtension.cpp
+  Log.cpp
+  main.cpp
+  Matrices.cpp
+  ModelGL.cpp
+  ObjModel.cpp
+  OrbitCamera.cpp
+  procedure.cpp
+  Tga.cpp
+  Tokenizer.cpp
+  ViewForm.cpp
+  ViewGL.cpp
+  Generating Code...
+  Compiling...
+  wcharUtil.cpp
+  Window.cpp
+  Generating Code...
+  OrbitCamera.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\OrbitCamera\OrbitCamera\src\..\bin\OrbitCamera.exe

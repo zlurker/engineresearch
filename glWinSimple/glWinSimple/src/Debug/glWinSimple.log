@@ -1,1 +1,6 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.Cpp.Platform.targets(57,5): error MSB8020: The build tools for v142 (Platform Toolset = 'v142') cannot be found. To build using the v142 build tools, please install v142 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Retarget solution".
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  Window.cpp
+  
+glWinSimple.exe.manifest : manifest authoring warning 81010002: Unrecognized Element "dpiAwareness" in namespace "http://schemas.microsoft.com/SMI/2016/WindowsSettings".
+  
+  glWinSimple.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\glWinSimple\glWinSimple\src\\..\bin\glWinSimple.exe

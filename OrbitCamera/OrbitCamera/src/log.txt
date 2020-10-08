@@ -1,0 +1,13 @@
+===== Log started at 2020-10-07, 17:33:43. =====
+
+17:33:43  Main window is created.
+17:33:43  Display Resolution: 1920x1080
+17:33:43  Creating a dummy window to use WGL_ARB_pixel_format extension.
+17:33:43  WGL_ARB_pixel_format and WGL_ARB_multisample are supported.
+17:33:43  Use wglChoosePixelFormatARB() to find a pixel format with MSAA.
+17:33:43  MSAA mode: 8x
+17:33:43  Pixel Format: 50
+17:33:43  A dummy window is destroyed.
+17:33:43  Created OpenGL rendering context for screen 1.
+17:33:43  Initialized OpenGL states. for screen 1.
+17:33:43  GLSL shader objects are initialized.
