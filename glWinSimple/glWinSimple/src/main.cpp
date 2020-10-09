@@ -26,7 +26,7 @@ int mainMessageLoop(HACCEL hAccelTable=0);
 ///////////////////////////////////////////////////////////////////////////////
 // main function of a windows application
 ///////////////////////////////////////////////////////////////////////////////
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR cmdArgs, int cmdShow)
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR cmdArgs, int cmdShow)
 {
     // get screen dpi
     //HDC hdc = ::GetDC(0);

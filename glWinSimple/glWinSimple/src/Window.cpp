@@ -75,7 +75,7 @@ HWND Window::create()
     // register a window class
     if(!::RegisterClassEx(&winClass)) return 0;
 
-    /*handle = ::CreateWindowEx(winStyleEx,           // window border with a sunken edge
+   handle = ::CreateWindowEx(winStyleEx,           // window border with a sunken edge
                               className,            // name of a registered window class
                               title,                // caption of window
                               winStyle,             // window style
@@ -86,9 +86,9 @@ HWND Window::create()
                               parentHandle,         // handle to parent window
                               menuHandle,           // handle to menu
                               instance,             // application instance
-                              (LPVOID)controller);  // window creation data*/
+                              (LPVOID)controller);  // window creation data
 
-    handle = CreateWindowW(L"Test", L"Test2", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, instance, nullptr);
+    //handle = CreateWindowW(className, title, winStyle, x, y, width, height, parentHandle, menuHandle, instance, (LPVOID)controller);
     ::MessageBox(0, L"Window should be opened.", L"Error", MB_ICONEXCLAMATION | MB_OK);
     //this->show(SW_SHOWDEFAULT);                     // make it visible
 
