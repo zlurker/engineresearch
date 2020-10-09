@@ -72,6 +72,8 @@ namespace Win
         HMENU menuHandle;                       // handle to menu
         HINSTANCE instance;                     // handle to instance
         Win::Controller *controller;            // pointer to controller
+
+        WCHAR test[100];
     };
 }
 
