@@ -192,8 +192,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-	WNDCLASS wcex;
-
+	WNDCLASSEX wcex;
+	memset(&wcex, 0, sizeof(WNDCLASSEX));
+	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wcex.lpfnWndProc = WndProc;
 	wcex.cbClsExtra = 0;
@@ -201,11 +202,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.hInstance = hInstance;
 	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_GAMEENGINE));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wcex.hbrBackground = NULL;
-	wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = L"Test";
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.lpszMenuName = 0;
+	wcex.lpszClassName = wnd_class.c_str();
+	wcex.hIconSm = 0;
 
-	return RegisterClass(&wcex);
+	return RegisterClassEx(&wcex);
 }
 
 //
@@ -225,7 +227,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hInst = hInstance; // Store instance handle in our global variable
 
 	style = WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-	HWND hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, szWindowClass, szTitle, style, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	HWND hWnd = ::CreateWindow(wnd_class.c_str(), NULL, style, 0, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+		
 
 	if (!hWnd)
 	{
@@ -233,11 +236,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
-
 	hdc = ::GetDC(hWnd);
 	MySetPixelFormat();
+
+	ReleaseDC(hWnd, hdc);
+	ShowWindow(hWnd, nCmdShow);
+	//UpdateWindow(hWnd);
 
 	if (!InitGL())
 		::MessageBox(0, L"Failed", L"Error", MB_ICONEXCLAMATION | MB_OK);
@@ -371,6 +375,8 @@ GLint MySetPixelFormat()
 	}
 
 	::MessageBox(0, L"Sucess.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+
+	
 	return 1;
 }
 
