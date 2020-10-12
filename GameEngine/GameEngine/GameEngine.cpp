@@ -60,10 +60,13 @@ int DrawGLScene(GLvoid)                                 // Here's Where We Do Al
 
 void render() {
 	while (true) {
-		/*std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		setViewport(800, 600);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		glClearColor(0.5f, 0.3f, 0.4f, 1);                       // background color
+		glClear(GL_COLOR_BUFFER_BIT);
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		setViewport(800, 400);
+
+		//glClear(GL_COLOR_BUFFER_BIT);
 
 		// save the initial ModelView matrix before modifying ModelView matrix
 		glPushMatrix();
@@ -84,9 +87,9 @@ void render() {
 		glVertex3f(-3, -2, 0);
 		glEnd();
 
-		glPopMatrix();*/
-		if (DrawGLScene() == 0)
-			::MessageBox(0, L"Error with draw", L"Error", MB_ICONEXCLAMATION | MB_OK);
+		glPopMatrix();
+		//if (DrawGLScene() == 0)
+			//::MessageBox(0, L"Error with draw", L"Error", MB_ICONEXCLAMATION | MB_OK);
 		swapBuffers();
 	}
 }
@@ -157,6 +160,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_GAMEENGINE);
 	wcex.lpszClassName = szWindowClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+	wcex.style = CS_OWNDC;
 
 	return RegisterClassExW(&wcex);
 }
@@ -213,9 +217,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	RECT rect;
 
 	::GetClientRect(hWnd, &rect);
-	::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	//::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 
-	::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	//::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 
 
 	//while (true);
