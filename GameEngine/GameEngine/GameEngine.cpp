@@ -17,7 +17,7 @@
 
 class renderer {
 public:
-	
+
 };
 
 // Global Variables:
@@ -37,6 +37,7 @@ void initLights();
 void setViewport(int w, int h);
 void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
 void render();
+int DrawGLScene(GLvoid);
 
 
 // Forward declarations of functions included in this code module:
@@ -50,9 +51,16 @@ void swapBuffers()
 	::SwapBuffers(hdc);
 }
 
+int DrawGLScene(GLvoid)                                 // Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
+	glLoadIdentity();                                   // Reset The Current Modelview Matrix
+	return TRUE;                                        // Everything Went OK
+}
+
 void render() {
 	while (true) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		/*std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		setViewport(800, 600);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -76,7 +84,9 @@ void render() {
 		glVertex3f(-3, -2, 0);
 		glEnd();
 
-		glPopMatrix();
+		glPopMatrix();*/
+		if (DrawGLScene() == 0)
+			::MessageBox(0, L"Error with draw", L"Error", MB_ICONEXCLAMATION | MB_OK);
 		swapBuffers();
 	}
 }
@@ -102,13 +112,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 	}
 
-	
 
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMEENGINE));
 
 	MSG msg;
 
-	rend = new renderer();	
 	std::thread thread(render);
 
 	// Main message loop:
@@ -171,9 +179,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	style = WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 	HWND hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, szWindowClass, szTitle, style, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-		
-		//CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		//CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+
+	//CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	//CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
 
 	if (!hWnd)
@@ -196,7 +204,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		::MessageBox(0, L"hglrc not set up.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	}
 	//::ReleaseDC(hWnd, hdc);
-	
+
 	if (!::wglMakeCurrent(hdc, hglrc)) {
 		::MessageBox(0, L"make current not setup.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	}
@@ -206,12 +214,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	::GetClientRect(hWnd, &rect);
 	::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-	
+
 	::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 
 
 	//while (true);
-	
+
 	return TRUE;
 }
 
@@ -246,9 +254,12 @@ void iniGL() {
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
-	glClearColor(0, 0, 0, 0);                       // background color
+	glClearColor(0.5f, 0.3f, 0.4f, 1);                       // background color
+	glClear(GL_COLOR_BUFFER_BIT);
 	glClearStencil(0);                              // clear stencil buffer
-	glClearDepth(1.0f);                             // 0 is near, 1 is far
+	glClearDepth(1.0f);
+
+	
 	glDepthFunc(GL_LEQUAL);
 
 	initLights();
