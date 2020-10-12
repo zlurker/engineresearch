@@ -27,12 +27,6 @@ renderer* rend;
 std::thread thread;
 DWORD style;
 
-bool setPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
-int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
-void iniGL();
-void initLights();
-void setViewport(int w, int h);
-void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
 void render();
 GLint MySetPixelFormat();
 bool InitGL(GLvoid);
@@ -238,7 +232,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	ReleaseDC(hWnd, hdc);
 	ShowWindow(hWnd, nCmdShow);
-	//UpdateWindow(hWnd);
 
 	if (!InitGL())
 		::MessageBox(0, L"Failed", L"Error", MB_ICONEXCLAMATION | MB_OK);
@@ -249,76 +242,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	rquad = 0.0f;
 	return TRUE;
 }
-
-/*void setViewport(int w, int h) {// set viewport to be the entire window
-	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-
-	// set perspective viewing frustum
-	float aspectRatio = (float)w / h;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60.0f, (float)(w) / h, 0.1f, 20.0f); // FOV, AspectRatio, NearClip, FarClip
-
-	// switch to modelview matrix in order to set scene
-	glMatrixMode(GL_MODELVIEW);
-}
-
-void iniGL() {
-	glShadeModel(GL_SMOOTH);                        // shading mathod: GL_SMOOTH or GL_FLAT
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);          // 4-byte pixel alignment
-
-	// enable /disable features
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-	//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	//glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-
-	// track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
-
-	glClearColor(0.5f, 0.3f, 0.4f, 1);                       // background color
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearStencil(0);                              // clear stencil buffer
-	glClearDepth(1.0f);
-
-
-	glDepthFunc(GL_LEQUAL);
-
-	initLights();
-	setCamera(0, 0, 10, 0, 0, 0);
-}
-
-void initLights()
-{
-	// set up light colors (ambient, diffuse, specular)
-	GLfloat lightKa[] = { .2f, .2f, .2f, 1.0f };      // ambient light
-	GLfloat lightKd[] = { .7f, .7f, .7f, 1.0f };      // diffuse light
-	GLfloat lightKs[] = { 1, 1, 1, 1 };               // specular light
-	glLightfv(GL_LIGHT0, GL_AMBIENT, lightKa);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightKd);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, lightKs);
-
-	// position the light
-	float lightPos[4] = { 0, 0, 20, 1 }; // positional light
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
-	glEnable(GL_LIGHT0);                            // MUST enable each light source after configuration
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// set camera position and lookat direction
-///////////////////////////////////////////////////////////////////////////////
-void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ)
-{
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(posX, posY, posZ, targetX, targetY, targetZ, 0, 1, 0); // eye(x,y,z), focal(x,y,z), up(x,y,z)
-}*/
 
 GLint MySetPixelFormat()
 {
@@ -380,7 +303,7 @@ GLint MySetPixelFormat()
 bool InitGL(GLvoid)										// All setup for opengl goes here
 {
 	glShadeModel(GL_SMOOTH);							// Enable smooth shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
+	glClearColor(0.3f, 0.4f, 0.1f, 0.5f);				// Black background
 	glClearDepth(1.0f);									// Depth buffer setup
 	glEnable(GL_DEPTH_TEST);							// Enables depth testing
 	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
@@ -395,7 +318,7 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialise th
 		height = 1;										// Making Height Equal One
 	}
 
-	//glViewport(0, 0, width, height);						// Reset The Current Viewport
+	glViewport(0, 0, width, height);						// Reset The Current Viewport
 
 	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
 	glLoadIdentity();									// Reset The Projection Matrix
@@ -406,89 +329,6 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialise th
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
 }
-
-
-/*bool setPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
-{
-	PIXELFORMATDESCRIPTOR pfd;
-
-	// find out the best matched pixel format
-	int pixelFormat = findPixelFormat(hdc, colorBits, depthBits, stencilBits);
-	if (pixelFormat == 0)
-		return false;
-
-	// set members of PIXELFORMATDESCRIPTOR with given mode ID
-	::DescribePixelFormat(hdc, pixelFormat, sizeof(pfd), &pfd);
-
-	// set the fixel format
-	if (!::SetPixelFormat(hdc, pixelFormat, &pfd))
-		return false;
-
-	return true;
-}*/
-
-///////////////////////////////////////////////////////////////////////////////
-// find the best pixel format
-///////////////////////////////////////////////////////////////////////////////
-int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
-{
-	int currMode;                               // pixel format mode ID
-	int bestMode = 0;                           // return value, best pixel format
-	int currScore = 0;                          // points of current mode
-	int bestScore = 0;                          // points of best candidate
-	PIXELFORMATDESCRIPTOR pfd;
-
-	// search the available formats for the best mode
-	bestMode = 0;
-	bestScore = 0;
-	for (currMode = 1; ::DescribePixelFormat(hdc, currMode, sizeof(pfd), &pfd) > 0; ++currMode)
-	{
-		// ignore if cannot support opengl
-		if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL))
-			continue;
-
-		// ignore if cannot render into a window
-		if (!(pfd.dwFlags & PFD_DRAW_TO_WINDOW))
-			continue;
-
-		// ignore if cannot support rgba mode
-		if ((pfd.iPixelType != PFD_TYPE_RGBA) || (pfd.dwFlags & PFD_NEED_PALETTE))
-			continue;
-
-		// ignore if not double buffer
-		if (!(pfd.dwFlags & PFD_DOUBLEBUFFER))
-			continue;
-
-		// try to find best candidate
-		currScore = 0;
-
-		// colour bits
-		if (pfd.cColorBits >= colorBits) ++currScore;
-		if (pfd.cColorBits == colorBits) ++currScore;
-
-		// depth bits
-		if (pfd.cDepthBits >= depthBits) ++currScore;
-		if (pfd.cDepthBits == depthBits) ++currScore;
-
-		// stencil bits
-		if (pfd.cStencilBits >= stencilBits) ++currScore;
-		if (pfd.cStencilBits == stencilBits) ++currScore;
-
-		// alpha bits
-		if (pfd.cAlphaBits > 0) ++currScore;
-
-		// check if it is best mode so far
-		if (currScore > bestScore)
-		{
-			bestScore = currScore;
-			bestMode = currMode;
-		}
-	}
-
-	return bestMode;
-}
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // swap OpenGL frame buffers

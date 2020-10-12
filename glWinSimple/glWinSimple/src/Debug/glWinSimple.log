@@ -1,5 +1,4 @@
-﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
-  Window.cpp
+﻿Controller.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   
 glWinSimple.exe.manifest : manifest authoring warning 81010002: Unrecognized Element "dpiAwareness" in namespace "http://schemas.microsoft.com/SMI/2016/WindowsSettings".
   
