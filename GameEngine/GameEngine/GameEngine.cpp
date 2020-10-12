@@ -53,6 +53,7 @@ void swapBuffers()
 void render() {
 	while (true) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		setViewport(800, 600);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -191,18 +192,21 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return false;
 	}
 
-	hglrc = ::wglCreateContext(hdc);
-	::ReleaseDC(hWnd, hdc);
+	if (!(hglrc = ::wglCreateContext(hdc))) {
+		::MessageBox(0, L"hglrc not set up.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	}
+	//::ReleaseDC(hWnd, hdc);
+	
+	if (!::wglMakeCurrent(hdc, hglrc)) {
+		::MessageBox(0, L"make current not setup.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	}
 
-	::MessageBox(0, L"Open GL Setup.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-
-	::wglMakeCurrent(hdc, hglrc);
 	iniGL();
 	RECT rect;
 
 	::GetClientRect(hWnd, &rect);
 	::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-	setViewport(rect.right, rect.bottom);
+	
 	::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 
 
