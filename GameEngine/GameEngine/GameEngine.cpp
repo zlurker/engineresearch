@@ -17,34 +17,7 @@
 
 class renderer {
 public:
-	void render() {
-		while (true) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-			// save the initial ModelView matrix before modifying ModelView matrix
-			glPushMatrix();
-
-			// tramsform camera
-			glTranslatef(0, 0, 20);
-			glRotatef(30, 1, 0, 0);   // pitch
-			glRotatef(40, 0, 1, 0);   // heading
-
-			// draw a triangle
-			glBegin(GL_TRIANGLES);
-			glNormal3f(0, 0, 1);
-			glColor3f(1, 0, 0);
-			glVertex3f(3, -2, 0);
-			glColor3f(0, 1, 0);
-			glVertex3f(0, 2, 0);
-			glColor3f(0, 0, 1);
-			glVertex3f(-3, -2, 0);
-			glEnd();
-
-			glPopMatrix();
-		}
-	}
+	
 };
 
 // Global Variables:
@@ -55,6 +28,7 @@ HDC hdc;
 HGLRC hglrc;
 renderer* rend;
 std::thread thread;
+DWORD style;
 
 bool setPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
 int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits);
@@ -62,6 +36,7 @@ void iniGL();
 void initLights();
 void setViewport(int w, int h);
 void setCamera(float posX, float posY, float posZ, float targetX, float targetY, float targetZ);
+void render();
 
 
 // Forward declarations of functions included in this code module:
@@ -69,6 +44,41 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+void swapBuffers()
+{
+	::SwapBuffers(hdc);
+}
+
+void render() {
+	while (true) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		// save the initial ModelView matrix before modifying ModelView matrix
+		glPushMatrix();
+
+		// tramsform camera
+		glTranslatef(0, 0, 20);
+		glRotatef(30, 1, 0, 0);   // pitch
+		glRotatef(40, 0, 1, 0);   // heading
+
+		// draw a triangle
+		glBegin(GL_TRIANGLES);
+		glNormal3f(0, 0, 1);
+		glColor3f(1, 0, 0);
+		glVertex3f(3, -2, 0);
+		glColor3f(0, 1, 0);
+		glVertex3f(0, 2, 0);
+		glColor3f(0, 0, 1);
+		glVertex3f(-3, -2, 0);
+		glEnd();
+
+		glPopMatrix();
+		swapBuffers();
+	}
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -98,7 +108,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	MSG msg;
 
 	rend = new renderer();	
-	thread = std::thread(&renderer::render, rend);
+	std::thread thread(render);
 
 	// Main message loop:
 	while (GetMessage(&msg, nullptr, 0, 0))
@@ -152,11 +162,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
+
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
 
-	HWND hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	style = WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	HWND hWnd = CreateWindowEx(WS_EX_CLIENTEDGE, szWindowClass, szTitle, style, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 		
 		//CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		//CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
@@ -191,6 +204,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	::MessageBox(0, L"Set Rect.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	setViewport(rect.right, rect.bottom);
 	::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+
+
+	//while (true);
 	
 	return TRUE;
 }
@@ -347,10 +363,7 @@ int findPixelFormat(HDC hdc, int colorBits, int depthBits, int stencilBits)
 ///////////////////////////////////////////////////////////////////////////////
 // swap OpenGL frame buffers
 ///////////////////////////////////////////////////////////////////////////////
-void swapBuffers()
-{
-	::SwapBuffers(hdc);
-}
+
 
 //
 //  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
