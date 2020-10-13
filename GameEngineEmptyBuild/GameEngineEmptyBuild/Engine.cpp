@@ -41,6 +41,8 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
 int DrawGLScene(GLvoid);
 int mainMessageLoop(HACCEL hAccelTable = 0);
 GLint MySetPixelFormat(int nCmdShow);
+bool setPixelFormat(int colorBits, int depthBits, int stencilBits);
+int findPixelFormat(int colorBits, int depthBits, int stencilBits);
 
 GLfloat	rtri;				// Angle for the triangle
 GLfloat	rquad;				// Angle for the quad
@@ -88,7 +90,7 @@ int mainMessageLoop(HACCEL hAccelTable)
 {
 	MSG msg;
 
-	
+
 
 	while (::GetMessage(&msg, 0, 0, 0) > 0)  // loop until WM_QUIT(0) received
 	{
@@ -103,42 +105,113 @@ int mainMessageLoop(HACCEL hAccelTable)
 	return (int)msg.wParam;                 // return nExitCode of PostQuitMessage()
 }
 
+/*bool setPixelFormat(int colorBits, int depthBits, int stencilBits)
+{
+	PIXELFORMATDESCRIPTOR pfd;
+
+	// find out the best matched pixel format
+	int pixelFormat = findPixelFormat(colorBits, depthBits, stencilBits);
+
+	if (pixelFormat == 0) {
+		return false;
+	}
+
+	::MessageBox(0, L"Found pixel format.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+
+	// set members of PIXELFORMATDESCRIPTOR with given mode ID
+	::DescribePixelFormat(hdc, pixelFormat, sizeof(pfd), &pfd);
+	// set the fixel format
+	if (!::SetPixelFormat(hdc, pixelFormat, &pfd))
+		return false;
+
+	return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// find the best pixel format
+///////////////////////////////////////////////////////////////////////////////
+int findPixelFormat(int colorBits, int depthBits, int stencilBits)
+{
+	int currMode;                               // pixel format mode ID
+	int bestMode = 0;                           // return value, best pixel format
+	int currScore = 0;                          // points of current mode
+	int bestScore = 0;                          // points of best candidate
+	PIXELFORMATDESCRIPTOR pfd;
+
+	// search the available formats for the best mode
+	bestMode = 0;
+	bestScore = 0;
+	for (currMode = 1; ::DescribePixelFormat(hdc, currMode, sizeof(pfd), &pfd) > 0; ++currMode)
+	{
+		// ignore if cannot support opengl
+		if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL))
+			continue;
+
+		// ignore if cannot render into a window
+		if (!(pfd.dwFlags & PFD_DRAW_TO_WINDOW))
+			continue;
+
+		// ignore if cannot support rgba mode
+		if ((pfd.iPixelType != PFD_TYPE_RGBA) || (pfd.dwFlags & PFD_NEED_PALETTE))
+			continue;
+
+		// ignore if not double buffer
+		if (!(pfd.dwFlags & PFD_DOUBLEBUFFER))
+			continue;
+
+		// try to find best candidate
+		currScore = 0;
+
+		// colour bits
+		if (pfd.cColorBits >= colorBits) ++currScore;
+		if (pfd.cColorBits == colorBits) ++currScore;
+
+		// depth bits
+		if (pfd.cDepthBits >= depthBits) ++currScore;
+		if (pfd.cDepthBits == depthBits) ++currScore;
+
+		// stencil bits
+		if (pfd.cStencilBits >= stencilBits) ++currScore;
+		if (pfd.cStencilBits == stencilBits) ++currScore;
+
+		// alpha bits
+		if (pfd.cAlphaBits > 0) ++currScore;
+
+		// check if it is best mode so far
+		if (currScore > bestScore)
+		{
+			bestScore = currScore;
+			bestMode = currMode;
+		}
+	}
+
+	return bestMode;
+}*/
+
 GLint MySetPixelFormat(int nCmdShow)
 {
 
-	hdc = GetDC(handle);
+	//hdc = GetDC(handle);
 
-	PIXELFORMATDESCRIPTOR pfd = {
-		sizeof(PIXELFORMATDESCRIPTOR),    // size of this pfd 
-		1,                                // version number 
-		PFD_DRAW_TO_WINDOW |              // support window 
-		PFD_SUPPORT_OPENGL |              // support OpenGL 
-		PFD_DOUBLEBUFFER,                 // double buffered 
-		PFD_TYPE_RGBA,                    // RGBA type 
-		24,                               // 24-bit color depth 
-		0, 0, 0, 0, 0, 0,                 // color bits ignored 
-		0,                                // no alpha buffer 
-		0,                                // shift bit ignored 
-		0,                                // no accumulation buffer 
-		0, 0, 0, 0,                       // accum bits ignored 
-		32,                               // 32-bit z-buffer     
-		0,                                // no stencil buffer 
-		0,                                // no auxiliary buffer 
-		PFD_MAIN_PLANE,                   // main layer 
-		0,                                // reserved 
-		0, 0, 0                           // layer masks ignored 
-	};
+	PIXELFORMATDESCRIPTOR pfd = { sizeof(pfd), 1 };
+	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+
+	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_SUPPORT_COMPOSITION | PFD_DOUBLEBUFFER;
+	pfd.iPixelType = PFD_TYPE_RGBA;
+	pfd.cColorBits = 32;
+	pfd.cAlphaBits = 8;
+	pfd.iLayerType = PFD_MAIN_PLANE;
 
 	GLint  iPixelFormat;
 
-	// get the device context's best, available pixel format match 
+	// get the device context's best, available pixel format match
 	if ((iPixelFormat = ChoosePixelFormat(hdc, &pfd)) == 0)
 	{
 		::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 		return 0;
 	}
 
-	// make that match the device context's current pixel format 
+	// make that match the device context's current pixel format
 	if (SetPixelFormat(hdc, iPixelFormat, &pfd) == FALSE)
 	{
 		::MessageBox(0, L"Set Viewport.", L"Error", MB_ICONEXCLAMATION | MB_OK);
@@ -168,7 +241,7 @@ GLint MySetPixelFormat(int nCmdShow)
 bool InitGL(GLvoid)										// All setup for opengl goes here
 {
 	glShadeModel(GL_SMOOTH);							// Enable smooth shading
-	glClearColor(0.3f, 0.4f, 0.1f, 0.5f);				// Black background
+	glClearColor(0.1f, 0.7f, 0.2f, 0.5f);				// Black background
 	glClearDepth(1.0f);									// Depth buffer setup
 	glEnable(GL_DEPTH_TEST);							// Enables depth testing
 	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
@@ -297,9 +370,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	style = WS_OVERLAPPEDWINDOW | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
-	handle = CreateWindowEx(WS_EX_CLIENTEDGE, L"Test",NULL,style,0,0,800,600,0,0,hInstance,NULL);
+	handle = CreateWindowEx(WS_EX_CLIENTEDGE, L"Test", NULL, style, 0, 0, 800, 600, 0, 0, hInstance, NULL);
 
-	
+	hdc = GetDC(handle);
+
+	// if (setPixelFormat(32, 24, 8)) {
+		//return 0;
+	//}
 	MySetPixelFormat(nCmdShow);
 
 	if (!InitGL())
