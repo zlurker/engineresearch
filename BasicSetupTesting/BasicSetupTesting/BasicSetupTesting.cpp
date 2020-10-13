@@ -2,6 +2,8 @@
 //
 
 #include "framework.h"
+#include <windows.h>
+
 #include "BasicSetupTesting.h"
 
 #define MAX_LOADSTRING 100
