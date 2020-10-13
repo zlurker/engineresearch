@@ -1,2 +1,4 @@
-﻿  OpenGL_on_a_Windows_Form.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\demo\OpenGL_on_a_Windows_Form\Debug\OpenGL_on_a_Windows_Form.exe
+﻿cl : Command line warning D9035: option 'clr:pure' has been deprecated and will be removed in a future release
+  OpenGL_on_a_Windows_Form.cpp
+  OpenGL_on_a_Windows_Form.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\demo\OpenGL_on_a_Windows_Form\Debug\OpenGL_on_a_Windows_Form.exe
   OpenGL_on_a_Windows_Form.vcxproj -> C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\demo\OpenGL_on_a_Windows_Form\Debug\OpenGL_on_a_Windows_Form.pdb (Full PDB)

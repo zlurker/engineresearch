@@ -1,4 +1,6 @@
-﻿Controller.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+﻿cl : command line warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  ModelGL.cpp
+C:\Users\gabriel_chia\Documents\Visual Studio 2015\Projects\GameEngineExperiments\glWinSimple\glWinSimple\src\ModelGL.cpp(62,34): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
   
 glWinSimple.exe.manifest : manifest authoring warning 81010002: Unrecognized Element "dpiAwareness" in namespace "http://schemas.microsoft.com/SMI/2016/WindowsSettings".
   
