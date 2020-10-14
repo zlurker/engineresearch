@@ -5,13 +5,20 @@
 
 class RenderSystem {
 public:
-	RenderSystem(HDC hdcHandle);
+	RenderSystem(HWND handle,int w, int h);
 	~RenderSystem();
 
 	//void SetUpGL();
+	GLvoid ReSizeGLScene(GLsizei width, GLsizei height);
+	int InitGL(GLvoid);
+	bool RenderSetUp();
 	void Render();
 	void Draw(GLvoid);
 	void SwapBuffers();
+	int width;
+	int height;
 
+	HWND wHandle;
 	HDC hdc;
+	HGLRC hrc;
 };
