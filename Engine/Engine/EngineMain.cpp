@@ -1,11 +1,14 @@
 #include <windows.h>        // Header File For Windows
 #include <gl\gl.h>          // Header File For The OpenGL32 Library
 #include <gl\glu.h>         // Header File For The GLu32 Library
+#include "RenderSystem.h"
+#include <thread>
 
 HDC         hDC = NULL;       // Private GDI Device Context
 HGLRC       hRC = NULL;       // Permanent Rendering Context
 HWND        hWnd = NULL;      // Holds Our Window Handle
 HINSTANCE   hInstance;      // Holds The Instance Of The Application
+RenderSystem* rS;
 
 bool    keys[256];          // Array Used For The Keyboard Routine
 bool    active = TRUE;        // Window Active Flag Set To TRUE By Default
@@ -285,6 +288,8 @@ BOOL CreateGLWindow(int width, int height, int bits)
 		return FALSE;                               // Return FALSE
 	}
 
+	rS = new RenderSystem(hDC);
+
 	if (!(PixelFormat = ChoosePixelFormat(hDC, &pfd))) // Did Windows Find A Matching Pixel Format?
 	{
 		//KillGLWindow();                             // Reset The Display
@@ -356,6 +361,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
+
+	case WM_CREATE:	
+		std::thread test(&RenderSystem::Render, rS);
+		break;
 	}
 	return 0;
 }
@@ -368,6 +377,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	MSG     msg;                                    // Windows Message Structure
 	BOOL    done = FALSE;                             // Bool Variable To Exit Loop
 
+	
+
 	// Ask The User Which Screen Mode They Prefer
 	//if (MessageBox(NULL, "Would You Like To Run In Fullscreen Mode?", "Start FullScreen?", MB_YESNO | MB_ICONQUESTION) == IDNO)
 	//{
@@ -379,6 +390,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	{
 		return 0;                                   // Quit If Window Was Not Created
 	}
+
+	
 
 	while (!done)                                    // Loop That Runs While done=FALSE
 	{
@@ -405,8 +418,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 				}
 				else                                // Not Time To Quit, Update Screen
 				{
-					DrawGLScene();                  // Draw The Scene
-					SwapBuffers(hDC);         // Swap Buffers (Double Buffering)
+					//DrawGLScene();                  // Draw The Scene
+					//SwapBuffers(hDC);         // Swap Buffers (Double Buffering)
 				}
 			}
 
