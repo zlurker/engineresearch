@@ -101,9 +101,7 @@ bool RenderSystem::RenderSetUp() {
 		return FALSE;                               // Return FALSE
 	}
 
-	ShowWindow(wHandle, SW_SHOW);                       // Show The Window
-	SetForegroundWindow(wHandle);                      // Slightly Higher Priority
-	SetFocus(wHandle);                                 // Sets Keyboard Focus To The Window
+	
 	ReSizeGLScene(width, height);                   // Set Up Our Perspective GL Screen
 
 	if (!InitGL())                                  // Initialize Our Newly Created GL Window
@@ -112,15 +110,25 @@ bool RenderSystem::RenderSetUp() {
 		//MessageBox(NULL, "Initialization Failed.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;                               // Return FALSE
 	}
+
+	return TRUE;
 }
 
 void RenderSystem::Render() {
 	RenderSetUp();
-
-	while (true) {
+	while (1) {
 		Draw();
 		SwapBuffers();
 	}
+}
+
+void RenderSystem::BeginLoop() {
+	//RenderSetUp();
+	ShowWindow(wHandle, SW_SHOW);                       // Show The Window
+	SetForegroundWindow(wHandle);                      // Slightly Higher Priority
+	SetFocus(wHandle);                                 // Sets Keyboard Focus To The Window
+
+	std::thread test(&RenderSystem::Render, this);
 }
 
 void RenderSystem::Draw(GLvoid) {

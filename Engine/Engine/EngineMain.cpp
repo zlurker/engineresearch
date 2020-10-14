@@ -140,7 +140,7 @@ GLvoid KillGLWindow(GLvoid)                             // Properly Kill The Win
 
 BOOL CreateGLWindow(int width, int height, int bits)
 {
-	
+
 	WNDCLASS    wc;                     // Windows Class Structure
 	DWORD       dwExStyle;              // Window Extended Style
 	DWORD       dwStyle;                // Window Style
@@ -211,7 +211,7 @@ BOOL CreateGLWindow(int width, int height, int bits)
 
 	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
 
-	// Create The Window
+		// Create The Window
 	if (!(hWnd = CreateWindowEx(dwExStyle,                          // Extended Style For The Window
 		L"OpenGL",                           // Class Name
 		NULL,                              // Window Title
@@ -228,11 +228,13 @@ BOOL CreateGLWindow(int width, int height, int bits)
 	{
 		//KillGLWindow();                             // Reset The Display
 		//MessageBox(NULL, "Window Creation Error.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
+		::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 		return FALSE;                               // Return FALSE
 	}
 
-	
 
+
+	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	return TRUE;                                    // Success
 }
 
@@ -240,6 +242,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_CREATE:
+	{
+		rS = new RenderSystem(hWnd, 640, 480);
+		rS->BeginLoop();
+		return (LRESULT)0;
+		//return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	break;
+
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);
@@ -251,6 +262,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 	}
 	break;
+
 	case WM_PAINT:
 	{
 		PAINTSTRUCT ps;
@@ -259,16 +271,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 	}
 	break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
-
-	case WM_CREATE:	
-		rS = new RenderSystem(hWnd,640,480);
-		std::thread test(&RenderSystem::Render, rS);
-		break;
 	}
 	return 0;
 }
@@ -281,7 +289,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	MSG     msg;                                    // Windows Message Structure
 	BOOL    done = FALSE;                             // Bool Variable To Exit Loop
 
-	
+
 
 	// Ask The User Which Screen Mode They Prefer
 	//if (MessageBox(NULL, "Would You Like To Run In Fullscreen Mode?", "Start FullScreen?", MB_YESNO | MB_ICONQUESTION) == IDNO)
@@ -295,8 +303,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		return 0;                                   // Quit If Window Was Not Created
 	}
 
-	
-
+	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))   // Is There A Message Waiting?
@@ -341,6 +348,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		}
 	}
 
+	::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	// Shutdown
 	//KillGLWindow();                                 // Kill The Window
 	return (msg.wParam);                            // Exit The Program
