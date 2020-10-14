@@ -234,7 +234,7 @@ BOOL CreateGLWindow(int width, int height, int bits)
 		dwStyle = WS_OVERLAPPEDWINDOW;                            // Windows Style
 	}
 
-	//AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
+	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
 
 	// Create The Window
 	if (!(hWnd = CreateWindowEx(dwExStyle,                          // Extended Style For The Window
@@ -244,8 +244,8 @@ BOOL CreateGLWindow(int width, int height, int bits)
 		WS_CLIPSIBLINGS |                   // Required Window Style
 		WS_CLIPCHILDREN,                    // Required Window Style
 		0, 0,                               // Window Position
-		600,   // Calculate Window Width
-		800,   // Calculate Window Height
+		WindowRect.right - WindowRect.left,   // Calculate Window Width
+		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
 		NULL,                               // No Parent Window
 		NULL,                               // No Menu
 		hInstance,                          // Instance
