@@ -200,6 +200,7 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(1.0f, 1.0f, 1.0f);					// Top Left of the quad (right)
 	glVertex3f(1.0f, -1.0f, 1.0f);					// Bottom left of the quad (right)
 	glVertex3f(1.0f, -1.0f, -1.0f);					// Bottom right of the quad (right)
+
 	glEnd();
 }
 
