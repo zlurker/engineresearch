@@ -23,4 +23,5 @@ public:
 	HWND wHandle;
 	HDC hdc;
 	HGLRC hrc;
+	std::thread renderThread;
 };

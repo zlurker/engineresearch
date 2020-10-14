@@ -246,7 +246,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		rS = new RenderSystem(hWnd, 640, 480);
 		rS->BeginLoop();
-		return (LRESULT)0;
+		//return (LRESULT)0;
 		//return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	break;
