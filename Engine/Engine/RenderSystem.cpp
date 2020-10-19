@@ -118,7 +118,7 @@ bool RenderSystem::RenderSetUp() {
 
 void RenderSystem::Render() {
 	RenderSetUp();
-	while (1) {
+	while (true) {
 		Draw();
 		SwapBuffers();
 	}

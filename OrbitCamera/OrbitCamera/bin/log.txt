@@ -1,38 +1,176 @@
-===== Log started at 2020-10-07, 17:33:57. =====
+===== Log started at 2020-10-19, 16:45:46. =====
 
-17:33:57  Main window is created.
-17:33:57  Display Resolution: 1920x1080
-17:33:57  Creating a dummy window to use WGL_ARB_pixel_format extension.
-17:33:57  WGL_ARB_pixel_format and WGL_ARB_multisample are supported.
-17:33:57  Use wglChoosePixelFormatARB() to find a pixel format with MSAA.
-17:33:57  MSAA mode: 8x
-17:33:57  Pixel Format: 50
-17:33:57  A dummy window is destroyed.
-17:33:57  Created OpenGL rendering context for screen 1.
-17:33:57  Initialized OpenGL states. for screen 1.
-17:33:57  GLSL shader objects are initialized.
-17:33:58  Loaded OBJ models.
-17:33:58  Changed OpenGL rendering window size: 1920x1080 for screen 1.
-17:33:58  OpenGL rendering window 1 is created.
-17:33:58  Created OpenGL window for screen 2.
-17:33:58  Changed OpenGL rendering window size: 1920x1080 for screen 2.
-17:33:58  OpenGL rendering window 2 is created.
-17:33:58  Form dialog is created.
-17:33:59  Changed OpenGL rendering window size: 496x496 for screen 1.
-17:33:59  Changed OpenGL rendering window size: 496x496 for screen 2.
-17:33:59  Changed OpenGL rendering window size: 499x513 for screen 1.
-17:33:59  Changed OpenGL rendering window size: 499x513 for screen 2.
-17:33:59  Changed OpenGL rendering window size: 496x496 for screen 1.
-17:33:59  Changed OpenGL rendering window size: 496x496 for screen 2.
-17:33:59  Main window is open.
+16:45:46  Main window is created.
+16:45:46  Display Resolution: 1920x1080
+16:45:46  Creating a dummy window to use WGL_ARB_pixel_format extension.
+16:45:46  WGL_ARB_pixel_format and WGL_ARB_multisample are supported.
+16:45:46  Use wglChoosePixelFormatARB() to find a pixel format with MSAA.
+16:45:46  MSAA mode: 8x
+16:45:46  Pixel Format: 50
+16:45:46  A dummy window is destroyed.
+16:45:46  Created OpenGL rendering context for screen 1.
+16:45:46  Initialized OpenGL states. for screen 1.
+16:45:46  GLSL shader objects are initialized.
+16:45:48  Loaded OBJ models.
+16:45:48  Changed OpenGL rendering window size: 1920x1080 for screen 1.
+16:45:48  OpenGL rendering window 1 is created.
+16:45:48  Created OpenGL window for screen 2.
+16:45:48  Changed OpenGL rendering window size: 1920x1080 for screen 2.
+16:45:48  OpenGL rendering window 2 is created.
+16:45:48  Form dialog is created.
+16:45:48  Changed OpenGL rendering window size: 496x496 for screen 1.
+16:45:48  Changed OpenGL rendering window size: 496x496 for screen 2.
+16:45:48  Changed OpenGL rendering window size: 499x513 for screen 1.
+16:45:48  Changed OpenGL rendering window size: 499x513 for screen 2.
+16:45:48  Changed OpenGL rendering window size: 496x496 for screen 1.
+16:45:48  Changed OpenGL rendering window size: 496x496 for screen 2.
+16:45:48  Main window is open.
 
-17:34:02  Closing the application...
-17:34:02  Main windows is destroyed.
-17:34:02  Closed OpenGL rendering context for screen 1.
-17:34:02  OpenGL window is destroyed for screen 1.
-17:34:02  OpenGL window is destroyed for screen 2.
-17:34:02  Form dialog is destroyed.
-17:34:02  Application is terminated.
+16:45:54  Changed OpenGL rendering window size: 495x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 495x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 489x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 489x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 478x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 478x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 467x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 467x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 454x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 454x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 447x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 447x496 for screen 2.
+16:45:54  Changed OpenGL rendering window size: 442x496 for screen 1.
+16:45:54  Changed OpenGL rendering window size: 442x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 441x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 441x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 437x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 437x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 425x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 425x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 408x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 408x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 400x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 400x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 394x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 394x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 387x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 387x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 381x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 381x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 374x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 374x496 for screen 2.
+16:45:57  Changed OpenGL rendering window size: 363x496 for screen 1.
+16:45:57  Changed OpenGL rendering window size: 363x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 343x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 343x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 322x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 322x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 309x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 309x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 291x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 291x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 281x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 281x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 268x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 268x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 260x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 260x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 251x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 251x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 241x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 241x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 230x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 230x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 221x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 221x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 209x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 209x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 202x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 202x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 195x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 195x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 184x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 184x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 172x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 172x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 162x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 162x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 155x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 155x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 144x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 144x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 131x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 131x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 114x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 114x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 95x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 95x496 for screen 2.
+16:45:58  Changed OpenGL rendering window size: 86x496 for screen 1.
+16:45:58  Changed OpenGL rendering window size: 86x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 91x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 91x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 94x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 94x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 100x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 100x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 105x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 105x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 111x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 111x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 123x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 123x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 132x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 132x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 143x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 143x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 153x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 153x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 161x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 161x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 168x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 168x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 178x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 178x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 185x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 185x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 193x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 193x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 198x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 198x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 208x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 208x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 216x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 216x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 224x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 224x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 233x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 233x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 241x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 241x496 for screen 2.
+16:45:59  Changed OpenGL rendering window size: 260x496 for screen 1.
+16:45:59  Changed OpenGL rendering window size: 260x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 292x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 292x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 319x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 319x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 335x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 335x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 362x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 362x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 380x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 380x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 389x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 389x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 399x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 399x496 for screen 2.
+16:46:00  Changed OpenGL rendering window size: 411x496 for screen 1.
+16:46:00  Changed OpenGL rendering window size: 411x496 for screen 2.
+16:46:01  Closing the application...
+16:46:01  Main windows is destroyed.
+16:46:01  Closed OpenGL rendering context for screen 1.
+16:46:01  OpenGL window is destroyed for screen 1.
+16:46:01  OpenGL window is destroyed for screen 2.
+16:46:01  Form dialog is destroyed.
+16:46:01  Application is terminated.
 
 
 ===== END OF LOG =====
