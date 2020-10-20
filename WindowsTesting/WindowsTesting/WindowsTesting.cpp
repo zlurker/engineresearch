@@ -145,15 +145,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
+            HBRUSH brushTest;
             HDC hdc = BeginPaint(hWnd, &ps);
             RECT rect2;
-            int  step = 200 / 10.0;
+            int  step = 600 / 10.0;
+
+            brushTest = CreateSolidBrush(RGB(255, 255, 184));
+            SelectObject(hdc, brushTest);
+            Rectangle(hdc, 200, 100, 100, 400);
+
             for (int i = 0; i < 10; i++) {
                 rect2.bottom = 28;
                 rect2.top = 8;
-                rect2.left = i * step - 10;
-                rect2.right = i * step + 10;
-                DrawTextW(hdc, L"0", 1, &rect2, DT_CENTER);
+                rect2.left = i * step - 20;
+                rect2.right = i * step + 20;
+                DrawTextW(hdc, L"0123", 4, &rect2, DT_CENTER);
             }
             // TODO: Add any drawing code that uses hdc here...
             EndPaint(hWnd, &ps);
