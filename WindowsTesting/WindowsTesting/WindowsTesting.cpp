@@ -161,7 +161,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 rect2.right = i * step + 20;
                 DrawTextW(hdc, L"0123", 4, &rect2, DT_CENTER);
             }
-            // TODO: Add any drawing code that uses hdc here...
+
             EndPaint(hWnd, &ps);
         }
         break;

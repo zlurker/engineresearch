@@ -7,6 +7,7 @@
 HDC         hDC = NULL;       // Private GDI Device Context
 HGLRC       hRC = NULL;       // Permanent Rendering Context
 HWND        hWnd = NULL;      // Holds Our Window Handle
+HWND		mainWindow = NULL;
 HINSTANCE   hInstance;      // Holds The Instance Of The Application
 RenderSystem* rS;
 
@@ -15,15 +16,16 @@ bool    active = TRUE;        // Window Active Flag Set To TRUE By Default
 bool    fullscreen = TRUE;    // Fullscreen Flag Set To Fullscreen Mode By Default
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
+LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
 
 
 
-int DrawGLScene(GLvoid)                                 // Here's Where We Do All The Drawing
+/*int DrawGLScene(GLvoid)                                 // Here's Where We Do All The Drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
 	glLoadIdentity();                                   // Reset The Current Modelview Matrix
 	glTranslatef(-1.5f, 0.0f, -6.0f);						// Move left 1.5 units and into the screen 6.0
-	//glRotatef(rtri, 0.0f, 1.0f, 0.0f);						// Rotate the triangle on the y axis 
+	//glRotatef(rtri, 0.0f, 1.0f, 0.0f);						// Rotate the triangle on the y axis
 	glBegin(GL_TRIANGLES);								// Start drawing a triangle
 	glColor3f(1.0f, 0.0f, 0.0f);						// Red
 	glVertex3f(0.0f, 1.0f, 0.0f);					// Top Of triangle (front)
@@ -53,7 +55,7 @@ int DrawGLScene(GLvoid)                                 // Here's Where We Do Al
 
 	glLoadIdentity();									// Reset the current modelview matrix
 	glTranslatef(1.5f, 0.0f, -7.0f);						// Move right 1.5 units and into the screen 7.0
-	//glRotatef(rquad, 1.0f, 1.0f, 1.0f);					// Rotate the quad on the x axis 
+	//glRotatef(rquad, 1.0f, 1.0f, 1.0f);					// Rotate the quad on the x axis
 	glBegin(GL_QUADS);									// Draw a quad
 	glColor3f(0.0f, 1.0f, 0.0f);						// Set The color to green
 	glVertex3f(1.0f, 1.0f, -1.0f);					// Top Right of the quad (top)
@@ -88,7 +90,7 @@ int DrawGLScene(GLvoid)                                 // Here's Where We Do Al
 	glEnd();
 
 	return TRUE;                                        // Everything Went OK
-}
+}*/
 
 GLvoid KillGLWindow(GLvoid)                             // Properly Kill The Window
 {
@@ -216,12 +218,11 @@ BOOL CreateGLWindow(int width, int height, int bits)
 		L"OpenGL",                           // Class Name
 		NULL,                              // Window Title
 		dwStyle |                           // Defined Window Style
-		WS_CLIPSIBLINGS |                   // Required Window Style
-		WS_CLIPCHILDREN,                    // Required Window Style
+		WS_CHILD,                    // Required Window Style
 		0, 0,                               // Window Position
 		WindowRect.right - WindowRect.left,   // Calculate Window Width
 		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
-		NULL,                               // No Parent Window
+		mainWindow,                               // No Parent Window
 		NULL,                               // No Menu
 		hInstance,                          // Instance
 		NULL)))                             // Dont Pass Anything To WM_CREATE
@@ -267,7 +268,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
-		
+
+		EndPaint(hWnd, &ps);
+	}
+	break;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	return 0;
+}
+
+LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	switch (message)
+	{
+
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		// Parse the menu selections:
+		switch (wmId)
+		{
+		default:
+			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+	}
+	break;
+
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+
 		EndPaint(hWnd, &ps);
 	}
 	break;
@@ -295,9 +330,40 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//if (MessageBox(NULL, "Would You Like To Run In Fullscreen Mode?", "Start FullScreen?", MB_YESNO | MB_ICONQUESTION) == IDNO)
 	//{
 	fullscreen = FALSE;                           // Windowed Mode
-//}
 
-// Create Our OpenGL Window
+	WNDCLASS    wc;
+	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   // Redraw On Size, And Own DC For Window.
+	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
+	wc.cbClsExtra = 0;                                    // No Extra Window Data
+	wc.cbWndExtra = 0;                                    // No Extra Window Data
+	wc.hInstance = hInstance;                            // Set The Instance
+	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);          // Load The Default Icon
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
+	wc.hbrBackground = NULL;                                 // No Background Required For GL
+	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
+	wc.lpszClassName = L"MainWindow";                             // Set The Class Name
+
+	if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
+	{
+		//MessageBox(NULL, "Failed To Register The Window Class.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
+		return FALSE;                                           // Return FALSE
+	}
+
+	mainWindow = hWnd = CreateWindowEx(0,                          // Extended Style For The Window
+		L"MainWindow",                           // Class Name
+		NULL,                              // Window Title                          // Defined Window Style
+		WS_CLIPSIBLINGS |                   // Required Window Style
+		WS_CLIPCHILDREN,                    // Required Window Style
+		0, 0,                               // Window Position
+		1000,   // Calculate Window Width
+		600,   // Calculate Window Height
+		NULL,                               // No Parent Window
+		NULL,                               // No Menu
+		hInstance,                          // Instance
+		NULL);
+	//}
+
+	// Create Our OpenGL Window
 	if (!CreateGLWindow(640, 480, 16))
 	{
 		return 0;                                   // Quit If Window Was Not Created
