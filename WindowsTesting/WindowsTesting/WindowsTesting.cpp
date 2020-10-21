@@ -36,18 +36,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HWND inst = InitInstance(hInstance, nCmdShow, nullptr,false);
     InitInstance(hInstance, nCmdShow, inst,true);
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSTESTING));
+    //HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSTESTING));
 
     MSG msg;
 
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
+        //if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        //{
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-        }
+        //}
     }
 
     return (int) msg.wParam;

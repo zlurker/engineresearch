@@ -156,7 +156,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 
 	//hInstance = GetModuleHandle(NULL);                // Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)WndProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -234,8 +234,8 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 		return FALSE;                               // Return FALSE
 	}
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
+	//ShowWindow(hWnd, nCmdShow);
+	//UpdateWindow(hWnd);
 	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	return TRUE;                                    // Success
 }
@@ -340,7 +340,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	wc.hInstance = hInstance;                            // Set The Instance
 	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);          // Load The Default Icon
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
-	wc.hbrBackground = NULL;                                 // No Background Required For GL
+	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);                                 // No Background Required For GL
 	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
 	wc.lpszClassName = L"MainWindow";                             // Set The Class Name
 
@@ -352,7 +352,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 
 	mainWindow = CreateWindowEx(0,                          // Extended Style For The Window
 		L"MainWindow",                           // Class Name
-		NULL,                              // Window Title                          // Defined Window Style
+		L"Test",                              // Window Title                          // Defined Window Style
 		WS_CLIPSIBLINGS |                   // Required Window Style
 		WS_CLIPCHILDREN |
 		WS_OVERLAPPEDWINDOW,                    // Required Window Style
@@ -368,9 +368,9 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	ShowWindow(mainWindow, nCmdShow);
 	UpdateWindow(mainWindow);
 
-	HWND subWindow = CreateWindowEx(0,                          // Extended Style For The Window
+	/*HWND subWindow = CreateWindowEx(0,                          // Extended Style For The Window
 		L"MainWindow",                           // Class Name
-		NULL,                              // Window Title                          // Defined Window Style
+		L"Sub",                              // Window Title                          // Defined Window Style
 		WS_OVERLAPPEDWINDOW |WS_CHILD,                  // Required Window Style
 		0, 0,                               // Window Position
 		1000,   // Calculate Window Width
@@ -381,13 +381,13 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		NULL);
 
 	ShowWindow(subWindow, nCmdShow);
-	UpdateWindow(subWindow);
+	UpdateWindow(subWindow);*/
 	// Create Our OpenGL Window
-	//if (!CreateGLWindow(640, 480, 16, nCmdShow))
-	//{
-		//return 0;                                   // Quit If Window Was Not Created
-	//}
-	
+	if (!CreateGLWindow(640, 480, 16, nCmdShow))
+	{
+		return 0;                                   // Quit If Window Was Not Created
+	}
+
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
 	{
