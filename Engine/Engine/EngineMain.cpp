@@ -317,6 +317,16 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 	return 0;
 }
 
+HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow) {
+	if (!RegisterClass(&wndclass))
+		return NULL;
+
+	HWND windowInst = CreateWindowEx(dwExStyle, wndclass.lpszClassName, NULL, dwStyle, x, y, width, height, parent, NULL, hInstance, NULL);
+	ShowWindow(windowInst, nCmdShow);
+	UpdateWindow(windowInst);
+	return windowInst;
+}
+
 int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	HINSTANCE   hPrevInstance,      // Previous Instance
 	LPSTR       lpCmdLine,          // Command Line Parameters
@@ -340,11 +350,23 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	wc.hInstance = hInstance;                            // Set The Instance
 	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);          // Load The Default Icon
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);                                 // No Background Required For GL
+	wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);                                 // No Background Required For GL
 	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
-	wc.lpszClassName = L"MainWindow";                             // Set The Class Name
+	wc.lpszClassName = L"MainWindow";
 
-	if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
+	mainWindow = GenerateWindow(
+		wc,
+		0,
+		WS_CLIPSIBLINGS |                   // Required Window Style
+		WS_CLIPCHILDREN |
+		WS_OVERLAPPEDWINDOW,                    // Required Window Style
+		0, 0,                               // Window Position
+		1000,   // Calculate Window Width
+		600,   // Calculate Window Height
+		NULL,                               // No Parent Window
+		nCmdShow);// Set The Class Name
+
+	/*if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
 	{
 		//MessageBox(NULL, "Failed To Register The Window Class.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;                                           // Return FALSE
@@ -366,7 +388,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//}
 
 	ShowWindow(mainWindow, nCmdShow);
-	UpdateWindow(mainWindow);
+	UpdateWindow(mainWindow);*/
 
 	/*HWND subWindow = CreateWindowEx(0,                          // Extended Style For The Window
 		L"MainWindow",                           // Class Name
