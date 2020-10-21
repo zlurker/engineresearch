@@ -140,7 +140,7 @@ GLvoid KillGLWindow(GLvoid)                             // Properly Kill The Win
  *  bits            - Number Of Bits To Use For Color (8/16/24/32)          *
  *  fullscreenflag  - Use Fullscreen Mode (TRUE) Or Windowed Mode (FALSE)   */
 
-BOOL CreateGLWindow(int width, int height, int bits,int nCmdShow)
+BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 {
 
 	WNDCLASS    wc;                     // Windows Class Structure
@@ -156,7 +156,7 @@ BOOL CreateGLWindow(int width, int height, int bits,int nCmdShow)
 
 	//hInstance = GetModuleHandle(NULL);                // Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)WndProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -207,18 +207,19 @@ BOOL CreateGLWindow(int width, int height, int bits,int nCmdShow)
 	}
 	else
 	{
-		dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;           // Window Extended Style
+		//dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;           // Window Extended Style
 		dwStyle = WS_OVERLAPPEDWINDOW;                            // Windows Style
 	}
 
-	AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
+	//AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
 
 		// Create The Window
-	if (!(hWnd = CreateWindowEx(dwExStyle,                          // Extended Style For The Window
+	if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
 		L"OpenGL",                           // Class Name
 		NULL,                              // Window Title
 		dwStyle |                           // Defined Window Style
-		WS_CHILD,                    // Required Window Style
+		WS_CHILD |
+		WS_CLIPSIBLINGS,                    // Required Window Style
 		0, 0,                               // Window Position
 		WindowRect.right - WindowRect.left,   // Calculate Window Width
 		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
@@ -233,8 +234,8 @@ BOOL CreateGLWindow(int width, int height, int bits,int nCmdShow)
 		return FALSE;                               // Return FALSE
 	}
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
+	//ShowWindow(hWnd, nCmdShow);
+	//UpdateWindow(hWnd);
 	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	return TRUE;                                    // Success
 }
@@ -364,9 +365,12 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//}
 
 	ShowWindow(mainWindow, nCmdShow);
-	
+
+	HDC mwHdc;
+	mwHdc = GetDC(mainWindow);
+
 	// Create Our OpenGL Window
-	if (!CreateGLWindow(640, 480, 16,nCmdShow))
+	if (!CreateGLWindow(640, 480, 16, nCmdShow))
 	{
 		return 0;                                   // Quit If Window Was Not Created
 	}
@@ -414,6 +418,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 				//}
 			}
 		}
+
+		SwapBuffers(mwHdc);
 	}
 
 	::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);

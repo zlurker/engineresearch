@@ -13,7 +13,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
-BOOL                InitInstance(HINSTANCE, int);
+HWND                InitInstance(HINSTANCE, int,HWND,bool);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
@@ -33,10 +33,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
-    if (!InitInstance (hInstance, nCmdShow))
-    {
-        return FALSE;
-    }
+    HWND inst = InitInstance(hInstance, nCmdShow, nullptr,false);
+    InitInstance(hInstance, nCmdShow, inst,true);
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINDOWSTESTING));
 
@@ -93,12 +91,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
+HWND InitInstance(HINSTANCE hInstance, int nCmdShow,HWND parent, bool child)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+
+   DWORD style;
+
+   if (child)
+       style = WS_OVERLAPPEDWINDOW | WS_CHILD;
+   else
+       style = WS_OVERLAPPEDWINDOW;
+   
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, style,
+      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, parent, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -108,7 +114,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
-   return TRUE;
+   return hWnd;
 }
 
 //
