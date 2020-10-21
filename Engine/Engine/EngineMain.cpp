@@ -349,7 +349,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		return FALSE;                                           // Return FALSE
 	}
 
-	mainWindow = hWnd = CreateWindowEx(0,                          // Extended Style For The Window
+	mainWindow = CreateWindowEx(0,                          // Extended Style For The Window
 		L"MainWindow",                           // Class Name
 		NULL,                              // Window Title                          // Defined Window Style
 		WS_CLIPSIBLINGS |                   // Required Window Style
@@ -363,6 +363,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		NULL);
 	//}
 
+	ShowWindow(mainWindow, nCmdShow);
+	UpdateWindow(mainWindow);
 	// Create Our OpenGL Window
 	if (!CreateGLWindow(640, 480, 16))
 	{
