@@ -141,9 +141,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EngineMain.cpp" />
+    <ClCompile Include="InspectorSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InspectorSystem.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

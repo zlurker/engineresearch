@@ -19,6 +19,15 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndPr
 LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
 
 
+HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow) {
+	if (!RegisterClass(&wndclass))
+		return NULL;
+
+	HWND windowInst = CreateWindowEx(dwExStyle, wndclass.lpszClassName, NULL, dwStyle, x, y, width, height, parent, NULL, hInstance, NULL);
+	ShowWindow(windowInst, nCmdShow);
+	UpdateWindow(windowInst);
+	return windowInst;
+}
 
 /*int DrawGLScene(GLvoid)                                 // Here's Where We Do All The Drawing
 {
@@ -166,7 +175,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
 	wc.lpszClassName = L"OpenGL";                             // Set The Class Name
 
-	if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
+	/*if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
 	{
 		//MessageBox(NULL, "Failed To Register The Window Class.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
 		return FALSE;                                           // Return FALSE
@@ -209,12 +218,24 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	{
 		//dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;           // Window Extended Style
 		dwStyle = WS_OVERLAPPEDWINDOW;                            // Windows Style
-	}
+	}*/
 
 	//AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
+	dwStyle = WS_OVERLAPPEDWINDOW | WS_CHILD | WS_CLIPSIBLINGS;
+
+	GenerateWindow(
+		wc, 
+		0, 
+		dwStyle, 
+		0, 
+		0,                               // Window Position
+		WindowRect.right - WindowRect.left,   // Calculate Window Width
+		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
+		mainWindow, 
+		nCmdShow);
 
 		// Create The Window
-	if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
+	/*if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
 		L"OpenGL",                           // Class Name
 		NULL,                              // Window Title
 		dwStyle |                           // Defined Window Style
@@ -236,7 +257,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 
 	//ShowWindow(hWnd, nCmdShow);
 	//UpdateWindow(hWnd);
-	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);*/
 	return TRUE;                                    // Success
 }
 
@@ -317,15 +338,7 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 	return 0;
 }
 
-HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow) {
-	if (!RegisterClass(&wndclass))
-		return NULL;
 
-	HWND windowInst = CreateWindowEx(dwExStyle, wndclass.lpszClassName, NULL, dwStyle, x, y, width, height, parent, NULL, hInstance, NULL);
-	ShowWindow(windowInst, nCmdShow);
-	UpdateWindow(windowInst);
-	return windowInst;
-}
 
 int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	HINSTANCE   hPrevInstance,      // Previous Instance

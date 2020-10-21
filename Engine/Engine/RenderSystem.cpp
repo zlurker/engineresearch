@@ -101,7 +101,7 @@ bool RenderSystem::RenderSetUp() {
 		return FALSE;                               // Return FALSE
 	}
 
-	ShowWindow(wHandle, SW_SHOW);                       // Show The Window
+	//ShowWindow(wHandle, SW_SHOW);                       // Show The Window
 	SetForegroundWindow(wHandle);                      // Slightly Higher Priority
 	SetFocus(wHandle);                                 // Sets Keyboard Focus To The Window
 	ReSizeGLScene(width, height);                   // Set Up Our Perspective GL Screen
