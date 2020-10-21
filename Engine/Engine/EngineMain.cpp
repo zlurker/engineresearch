@@ -155,8 +155,8 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	//fullscreen = fullscreenflag;          // Set The Global Fullscreen Flag
 
 	//hInstance = GetModuleHandle(NULL);                // Grab An Instance For Our Window
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)WndProc;                    // WndProc Handles Messages
+	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
+	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -234,8 +234,8 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 		return FALSE;                               // Return FALSE
 	}
 
-	//ShowWindow(hWnd, nCmdShow);
-	//UpdateWindow(hWnd);
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	return TRUE;                                    // Success
 }
@@ -333,7 +333,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	fullscreen = FALSE;                           // Windowed Mode
 
 	WNDCLASS    wc;
-	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   // Redraw On Size, And Own DC For Window.
+	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
 	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
@@ -354,7 +354,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		L"MainWindow",                           // Class Name
 		NULL,                              // Window Title                          // Defined Window Style
 		WS_CLIPSIBLINGS |                   // Required Window Style
-		WS_CLIPCHILDREN,                    // Required Window Style
+		WS_CLIPCHILDREN |
+		WS_OVERLAPPEDWINDOW,                    // Required Window Style
 		0, 0,                               // Window Position
 		1000,   // Calculate Window Width
 		600,   // Calculate Window Height
@@ -365,16 +366,28 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//}
 
 	ShowWindow(mainWindow, nCmdShow);
-
-	HDC mwHdc;
-	mwHdc = GetDC(mainWindow);
-
-	// Create Our OpenGL Window
-	if (!CreateGLWindow(640, 480, 16, nCmdShow))
-	{
-		return 0;                                   // Quit If Window Was Not Created
-	}
 	UpdateWindow(mainWindow);
+
+	HWND subWindow = CreateWindowEx(0,                          // Extended Style For The Window
+		L"MainWindow",                           // Class Name
+		NULL,                              // Window Title                          // Defined Window Style
+		WS_OVERLAPPEDWINDOW |WS_CHILD,                  // Required Window Style
+		0, 0,                               // Window Position
+		1000,   // Calculate Window Width
+		600,   // Calculate Window Height
+		mainWindow,                               // No Parent Window
+		NULL,                               // No Menu
+		hInstance,                          // Instance
+		NULL);
+
+	ShowWindow(subWindow, nCmdShow);
+	UpdateWindow(subWindow);
+	// Create Our OpenGL Window
+	//if (!CreateGLWindow(640, 480, 16, nCmdShow))
+	//{
+		//return 0;                                   // Quit If Window Was Not Created
+	//}
+	
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
 	{
@@ -418,8 +431,6 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 				//}
 			}
 		}
-
-		SwapBuffers(mwHdc);
 	}
 
 	::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);

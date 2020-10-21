@@ -62,12 +62,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+    WNDCLASS wcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
+   // wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
+    wcex.lpfnWndProc    = (WNDPROC)WndProc;
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
@@ -76,9 +76,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WINDOWSTESTING);
     wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+   // wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);
+    return RegisterClass(&wcex);
 }
 
 //
@@ -103,7 +103,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow,HWND parent, bool child)
    else
        style = WS_OVERLAPPEDWINDOW;
    
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, style,
+   HWND hWnd = CreateWindowEx(0,szWindowClass, szTitle, style,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, parent, nullptr, hInstance, nullptr);
 
    if (!hWnd)
