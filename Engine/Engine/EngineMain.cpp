@@ -140,7 +140,7 @@ GLvoid KillGLWindow(GLvoid)                             // Properly Kill The Win
  *  bits            - Number Of Bits To Use For Color (8/16/24/32)          *
  *  fullscreenflag  - Use Fullscreen Mode (TRUE) Or Windowed Mode (FALSE)   */
 
-BOOL CreateGLWindow(int width, int height, int bits)
+BOOL CreateGLWindow(int width, int height, int bits,int nCmdShow)
 {
 
 	WNDCLASS    wc;                     // Windows Class Structure
@@ -156,7 +156,7 @@ BOOL CreateGLWindow(int width, int height, int bits)
 
 	//hInstance = GetModuleHandle(NULL);                // Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)WndProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -233,8 +233,8 @@ BOOL CreateGLWindow(int width, int height, int bits)
 		return FALSE;                               // Return FALSE
 	}
 
-
-
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
 	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	return TRUE;                                    // Success
 }
@@ -364,13 +364,13 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//}
 
 	ShowWindow(mainWindow, nCmdShow);
-	UpdateWindow(mainWindow);
+	
 	// Create Our OpenGL Window
-	if (!CreateGLWindow(640, 480, 16))
+	if (!CreateGLWindow(640, 480, 16,nCmdShow))
 	{
 		return 0;                                   // Quit If Window Was Not Created
 	}
-
+	UpdateWindow(mainWindow);
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
 	{
@@ -408,10 +408,10 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 				//KillGLWindow();                     // Kill Our Current Window
 				fullscreen = !fullscreen;             // Toggle Fullscreen / Windowed Mode
 				// Recreate Our OpenGL Window
-				if (!CreateGLWindow(640, 480, 16))
-				{
-					return 0;                       // Quit If Window Was Not Created
-				}
+				//if (!CreateGLWindow(640, 480, 16,nCmdShow))
+				//{
+					//return 0;                       // Quit If Window Was Not Created
+				//}
 			}
 		}
 	}
