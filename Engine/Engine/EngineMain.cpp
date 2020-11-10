@@ -2,6 +2,7 @@
 #include <gl\gl.h>          // Header File For The OpenGL32 Library
 #include <gl\glu.h>         // Header File For The GLu32 Library
 #include "RenderSystem.h"
+#include "InspectorSystem.h"
 #include <thread>
 
 HDC         hDC = NULL;       // Private GDI Device Context
@@ -10,6 +11,7 @@ HWND        hWnd = NULL;      // Holds Our Window Handle
 HWND		mainWindow = NULL;
 HINSTANCE   hInstance;      // Holds The Instance Of The Application
 RenderSystem* rS;
+InspectorSystem* iS;
 
 bool    keys[256];          // Array Used For The Keyboard Routine
 bool    active = TRUE;        // Window Active Flag Set To TRUE By Default
@@ -17,6 +19,7 @@ bool    fullscreen = TRUE;    // Fullscreen Flag Set To Fullscreen Mode By Defau
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
 LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
+
 
 
 HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow) {
@@ -261,83 +264,26 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	return TRUE;                                    // Success
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-	case WM_CREATE:
-	{
-		rS = new RenderSystem(hWnd, 640, 480);
-		rS->BeginLoop();
-		//return (LRESULT)0;
-		//return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	break;
 
-	case WM_COMMAND:
-	{
-		int wmId = LOWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-	}
-	break;
 
-	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
 
-		EndPaint(hWnd, &ps);
-	}
-	break;
+void CreateInspectorSystem() {
+	iS = new InspectorSystem();
 
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	return 0;
+	WNDCLASS    wc;
+	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
+	wc.lpfnWndProc = (WNDPROC)iS->InspectorSystemProc;                    // WndProc Handles Messages
+	wc.cbClsExtra = 0;                                    // No Extra Window Data
+	wc.cbWndExtra = 0;                                    // No Extra Window Data
+	wc.hInstance = hInstance;                            // Set The Instance
+	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);          // Load The Default Icon
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
+	wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);                                 // No Background Required For GL
+	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
+	wc.lpszClassName = L"MainWindow";
+
+	HWND inspectorWindow = GenerateWindow(wc,);
 }
-
-LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-	switch (message)
-	{
-
-	case WM_COMMAND:
-	{
-		int wmId = LOWORD(wParam);
-		// Parse the menu selections:
-		switch (wmId)
-		{
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-	}
-	break;
-
-	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-
-		EndPaint(hWnd, &ps);
-	}
-	break;
-
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	return 0;
-}
-
 
 
 int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
