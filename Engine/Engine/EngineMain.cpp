@@ -283,7 +283,7 @@ void CreateInspectorSystem(int nCmdShow) {
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);          // Load The Arrow Pointer
 	wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);                                 // No Background Required For GL
 	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
-	wc.lpszClassName = L"MainWindow";
+	wc.lpszClassName = L"InspectorWindow";
 
 	RECT        WindowRect;             // Grabs Rectangle Upper Left / Lower Right Values
 	WindowRect.left = (long)0;            // Set Left Value To 0
@@ -380,7 +380,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		return 0;                                   // Quit If Window Was Not Created
 	}
 
-	//CreateInspectorSystem(nCmdShow);
+	CreateInspectorSystem(nCmdShow);
 
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
