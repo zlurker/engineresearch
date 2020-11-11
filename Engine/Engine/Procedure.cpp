@@ -4,11 +4,14 @@
 LRESULT CALLBACK Win::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	static RenderSystem* rS;
-	//rS = (RenderSystem*)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+	rS = (RenderSystem*)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
 	if (message == WM_NCCREATE) {
 		RenderSystem* rS = (RenderSystem*)((CREATESTRUCT*)lParam)->lpCreateParams;
 		rS->SetHandle(hWnd);
+		::SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)rS);
 		//::MessageBox(0, L"Set up RS.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+		return ::DefWindowProc(hWnd, message, wParam, lParam);
 	}
 
 	switch (message)
