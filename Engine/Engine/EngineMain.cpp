@@ -4,6 +4,8 @@
 #include "RenderSystem.h"
 #include "InspectorSystem.h"
 #include <thread>
+#include "Procedure.h"
+using namespace Win;
 
 HDC         hDC = NULL;       // Private GDI Device Context
 HGLRC       hRC = NULL;       // Permanent Rendering Context
@@ -17,16 +19,16 @@ bool    keys[256];          // Array Used For The Keyboard Routine
 bool    active = TRUE;        // Window Active Flag Set To TRUE By Default
 bool    fullscreen = TRUE;    // Fullscreen Flag Set To Fullscreen Mode By Default
 
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
-LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
+//LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
+//LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
 
 
 
-HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow) {
+HWND GenerateWindow(WNDCLASS wndclass, DWORD dwExStyle, DWORD dwStyle, int x, int y, int width, int height, HWND parent, int nCmdShow, LPVOID ctrl) {
 	if (!RegisterClass(&wndclass))
 		return NULL;
 
-	HWND windowInst = CreateWindowEx(dwExStyle, wndclass.lpszClassName, NULL, dwStyle, x, y, width, height, parent, NULL, hInstance, NULL);
+	HWND windowInst = CreateWindowEx(dwExStyle, wndclass.lpszClassName, NULL, dwStyle, x, y, width, height, parent, NULL, hInstance, ctrl);
 	ShowWindow(windowInst, nCmdShow);
 	UpdateWindow(windowInst);
 	return windowInst;
@@ -227,52 +229,53 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	dwStyle = WS_OVERLAPPEDWINDOW | WS_CHILD | WS_CLIPSIBLINGS;
 
 	GenerateWindow(
-		wc, 
-		0, 
-		dwStyle, 
-		0, 
+		wc,
+		0,
+		dwStyle,
+		0,
 		0,                               // Window Position
 		WindowRect.right - WindowRect.left,   // Calculate Window Width
 		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
-		mainWindow, 
-		nCmdShow);
+		mainWindow,
+		nCmdShow,
+		rS);
 
-		// Create The Window
-	/*if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
-		L"OpenGL",                           // Class Name
-		NULL,                              // Window Title
-		dwStyle |                           // Defined Window Style
-		WS_CHILD |
-		WS_CLIPSIBLINGS,                    // Required Window Style
-		0, 0,                               // Window Position
-		WindowRect.right - WindowRect.left,   // Calculate Window Width
-		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
-		mainWindow,                               // No Parent Window
-		NULL,                               // No Menu
-		hInstance,                          // Instance
-		NULL)))                             // Dont Pass Anything To WM_CREATE
-	{
-		//KillGLWindow();                             // Reset The Display
-		//MessageBox(NULL, "Window Creation Error.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
-		::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);
-		return FALSE;                               // Return FALSE
-	}
+	// Create The Window
+/*if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
+	L"OpenGL",                           // Class Name
+	NULL,                              // Window Title
+	dwStyle |                           // Defined Window Style
+	WS_CHILD |
+	WS_CLIPSIBLINGS,                    // Required Window Style
+	0, 0,                               // Window Position
+	WindowRect.right - WindowRect.left,   // Calculate Window Width
+	WindowRect.bottom - WindowRect.top,   // Calculate Window Height
+	mainWindow,                               // No Parent Window
+	NULL,                               // No Menu
+	hInstance,                          // Instance
+	NULL)))                             // Dont Pass Anything To WM_CREATE
+{
+	//KillGLWindow();                             // Reset The Display
+	//MessageBox(NULL, "Window Creation Error.", "ERROR", MB_OK | MB_ICONEXCLAMATION);
+	::MessageBox(0, L"Exiting.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	return FALSE;                               // Return FALSE
+}
 
-	//ShowWindow(hWnd, nCmdShow);
-	//UpdateWindow(hWnd);
-	::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);*/
+//ShowWindow(hWnd, nCmdShow);
+//UpdateWindow(hWnd);
+::MessageBox(0, L"Completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);*/
 	return TRUE;                                    // Success
 }
 
 
 
 
-void CreateInspectorSystem() {
+void CreateInspectorSystem(int nCmdShow) {
 	iS = new InspectorSystem();
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)iS->InspectorSystemProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)InspectorSystemProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -282,7 +285,13 @@ void CreateInspectorSystem() {
 	wc.lpszMenuName = NULL;                                 // We Don't Want A Menu
 	wc.lpszClassName = L"MainWindow";
 
-	HWND inspectorWindow = GenerateWindow(wc,);
+	RECT        WindowRect;             // Grabs Rectangle Upper Left / Lower Right Values
+	WindowRect.left = (long)0;            // Set Left Value To 0
+	WindowRect.right = (long)400;       // Set Right Value To Requested Width
+	WindowRect.top = (long)0;             // Set Top Value To 0
+	WindowRect.bottom = (long)600;     // Set Bottom Value To Requested Height
+
+	HWND inspectorWindow = GenerateWindow(wc, 0, 0, 0, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
 }
 
 
@@ -300,6 +309,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//if (MessageBox(NULL, "Would You Like To Run In Fullscreen Mode?", "Start FullScreen?", MB_YESNO | MB_ICONQUESTION) == IDNO)
 	//{
 	fullscreen = FALSE;                           // Windowed Mode
+
+	rS = new RenderSystem(hWnd, 640, 480);
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
@@ -323,7 +334,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		1000,   // Calculate Window Width
 		600,   // Calculate Window Height
 		NULL,                               // No Parent Window
-		nCmdShow);// Set The Class Name
+		nCmdShow, NULL);// Set The Class Name
 
 	/*if (!RegisterClass(&wc))                                    // Attempt To Register The Window Class
 	{
@@ -368,6 +379,8 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	{
 		return 0;                                   // Quit If Window Was Not Created
 	}
+
+	CreateInspectorSystem(nCmdShow);
 
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE
