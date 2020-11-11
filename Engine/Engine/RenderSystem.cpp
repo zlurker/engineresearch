@@ -122,6 +122,8 @@ bool RenderSystem::RenderSetUp() {
 
 void RenderSystem::Render() {
 	RenderSetUp();
+
+	::MessageBox(0, L"Set up completed.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	while (true) {
 		Draw();
 		SwapBuffers();
