@@ -292,6 +292,7 @@ void CreateInspectorSystem(int nCmdShow) {
 	WindowRect.bottom = (long)600;     // Set Bottom Value To Requested Height
 
 	HWND inspectorWindow = GenerateWindow(wc, 0, 0, 0, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
+	SetWindowTextA(inspectorWindow, "Transform");
 }
 
 
