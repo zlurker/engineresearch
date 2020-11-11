@@ -238,7 +238,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 		WindowRect.bottom - WindowRect.top,   // Calculate Window Height
 		mainWindow,
 		nCmdShow,
-		rS);
+		(LPVOID)rS);
 
 	// Create The Window
 /*if (!(hWnd = CreateWindowEx(0,                          // Extended Style For The Window
@@ -310,7 +310,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 	//{
 	fullscreen = FALSE;                           // Windowed Mode
 
-	rS = new RenderSystem(hWnd, 640, 480);
+	rS = new RenderSystem(640, 480);
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
@@ -380,7 +380,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 		return 0;                                   // Quit If Window Was Not Created
 	}
 
-	CreateInspectorSystem(nCmdShow);
+	//CreateInspectorSystem(nCmdShow);
 
 	//ShowWindow(hWnd, SW_SHOW);
 	while (!done)                                    // Loop That Runs While done=FALSE

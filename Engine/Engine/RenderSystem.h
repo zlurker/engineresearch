@@ -6,7 +6,7 @@
 
 class RenderSystem {
 public:
-	RenderSystem(HWND handle,int w, int h);
+	RenderSystem(int w, int h);
 	~RenderSystem();
 
 	//void SetUpGL();
@@ -17,6 +17,7 @@ public:
 	void Draw(GLvoid);
 	void SwapBuffers();
 	void BeginLoop();
+	void SetHandle(HWND handle);
 	int width;
 	int height;
 

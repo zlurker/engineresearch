@@ -3,11 +3,20 @@
 
 LRESULT CALLBACK Win::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	static RenderSystem* rS;
+	//rS = (RenderSystem*)::GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
 	switch (message)
 	{
+	case WM_NCCREATE: {
+		RenderSystem* rS = (RenderSystem*)((CREATESTRUCT*)lParam)->lpCreateParams;
+		rS->SetHandle(hWnd);
+		//::MessageBox(0, L"Set up RS.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	}
+					break;
 	case WM_CREATE:
 	{
-		RenderSystem* rS = (RenderSystem*)((CREATESTRUCT*)lParam)->lpCreateParams;
+
 		rS->BeginLoop();
 		//return (LRESULT)0;
 		//return DefWindowProc(hWnd, message, wParam, lParam);

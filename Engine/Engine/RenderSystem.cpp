@@ -1,6 +1,6 @@
 #include "RenderSystem.h"
 
-RenderSystem::RenderSystem(HWND handle,int w, int h) :wHandle(handle), width(w), height(h) {
+RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
 
 }
 
@@ -25,6 +25,10 @@ GLvoid RenderSystem::ReSizeGLScene(GLsizei width, GLsizei height)     // Resize 
 
 	glMatrixMode(GL_MODELVIEW);                         // Select The Modelview Matrix
 	glLoadIdentity();                                   // Reset The Modelview Matrix
+}
+
+void RenderSystem::SetHandle(HWND handle) {
+	wHandle = handle;
 }
 
 int RenderSystem::InitGL(GLvoid)                                      // All Setup For OpenGL Goes Here
