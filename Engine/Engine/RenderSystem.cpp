@@ -45,8 +45,9 @@ int RenderSystem::InitGL(GLvoid)                                      // All Set
 
 
 int RenderSystem::GetPoxX() {
-	std::lock_guard<std::mutex> lock(Win::gObjD.lock);
-	return Win::gObjD.postX;
+	//std::lock_guard<std::mutex> lock(Win::lock);
+	//return Win::postX;
+	return 0;
 }
 
 bool RenderSystem::RenderSetUp() {

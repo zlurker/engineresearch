@@ -4,7 +4,7 @@
 #include <gl\glu.h> 
 #include <thread>
 #include <mutex>
-#include "Procedure.h"
+//#include "Procedure.h"
 
 class RenderSystem {
 public:

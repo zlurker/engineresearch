@@ -5,8 +5,6 @@
 #include "InspectorSystem.h"
 #include <thread>
 #include "Procedure.h"
-#include "GameObjectData.h"
-using namespace Win;
 
 HDC         hDC = NULL;       // Private GDI Device Context
 HGLRC       hRC = NULL;       // Permanent Rendering Context
@@ -22,7 +20,6 @@ bool    fullscreen = TRUE;    // Fullscreen Flag Set To Fullscreen Mode By Defau
 
 //LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
 //LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
-
 
 
 
@@ -172,7 +169,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 
 	//hInstance = GetModuleHandle(NULL);                // Grab An Instance For Our Window
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)WndProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)Win::WndProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -277,7 +274,7 @@ void CreateInspectorSystem(int nCmdShow) {
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)InspectorSystemProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)Win::InspectorSystemProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance
@@ -323,7 +320,7 @@ int WINAPI WinMain(HINSTANCE   hInstance,          // Instance
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.
-	wc.lpfnWndProc = (WNDPROC)MainWindowProc;                    // WndProc Handles Messages
+	wc.lpfnWndProc = (WNDPROC)Win::MainWindowProc;                    // WndProc Handles Messages
 	wc.cbClsExtra = 0;                                    // No Extra Window Data
 	wc.cbWndExtra = 0;                                    // No Extra Window Data
 	wc.hInstance = hInstance;                            // Set The Instance

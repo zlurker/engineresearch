@@ -142,11 +142,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EngineMain.cpp" />
+    <ClCompile Include="GameObjectData.cpp" />
     <ClCompile Include="InspectorSystem.cpp" />
     <ClCompile Include="Procedure.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObjectData.h" />
     <ClInclude Include="InspectorSystem.h" />
     <ClInclude Include="Procedure.h" />
     <ClInclude Include="RenderSystem.h" />
