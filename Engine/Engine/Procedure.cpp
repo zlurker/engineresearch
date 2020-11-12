@@ -104,6 +104,7 @@ LRESULT Win::InspectorSystemProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 		{
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
+
 		}
 	}
 	break;

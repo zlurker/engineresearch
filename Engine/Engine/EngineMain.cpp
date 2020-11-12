@@ -291,10 +291,14 @@ void CreateInspectorSystem(int nCmdShow) {
 	WindowRect.top = (long)0;             // Set Top Value To 0
 	WindowRect.bottom = (long)600;     // Set Bottom Value To Requested Height
 
-	HWND inspectorWindow = GenerateWindow(wc, 0, 0, 0, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
+	HWND inspectorWindow = GenerateWindow(wc, 0, WS_CHILD | WS_BORDER, 400, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
 	SetWindowTextA(inspectorWindow, "Transform");
 
-	CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56, 10, 50, 18, inspectorWindow, 0, hInstance, 0);
+	HWND tb = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56, 10, 50, 18, inspectorWindow, 0, hInstance, 0);
+	SetFocus(tb);
+	//CreateWindow(L"BUTTON", 0, WS_CHILD | WS_VISIBLE, 70, 70, 80, 25, inspectorWindow, 0, hInstance, 0);
+	iS->SetTextBox(tb);
+	iS->StartInspectorThread();
 }
 
 

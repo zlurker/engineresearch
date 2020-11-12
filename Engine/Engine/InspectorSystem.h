@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#include <thread>
+
 class InspectorSystem
 {
 
@@ -9,7 +11,10 @@ public:
 
 	void InspectorThread();
 	void StartInspectorThread();
+	void SetTextBox(HWND tb);
 
-	LRESULT CALLBACK InspectorSystemProc(HWND, UINT, WPARAM, LPARAM);
+	HWND textbox;
+	std::thread inspectorThread;
+
 };
 

@@ -10,9 +10,20 @@ InspectorSystem::~InspectorSystem()
 
 void InspectorSystem::InspectorThread()
 {
+	while (true) {
+		TCHAR buff[1024];
+		GetWindowText(textbox, buff, 1024);
+		OutputDebugString(buff);
+	}
 }
 
 void InspectorSystem::StartInspectorThread()
 {
+	inspectorThread = std::thread(&InspectorSystem::InspectorThread, this);
+}
+
+void InspectorSystem::SetTextBox(HWND tb) {
+	textbox = tb;
+	SetWindowText(textbox, L"0.00f");
 }
 
