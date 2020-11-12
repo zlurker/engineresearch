@@ -112,6 +112,15 @@ LRESULT Win::InspectorSystemProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
+		HBRUSH brush = CreateSolidBrush(RGB(255, 255, 184));
+		RECT header;
+
+		header.bottom = 200;
+		header.top = 0;
+		header.left = 0;
+		header.right = 400;
+
+		DrawTextW(hdc, L"Transform", 9, &header, DT_LEFT);
 
 		EndPaint(hWnd, &ps);
 	}

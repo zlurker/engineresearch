@@ -29,7 +29,7 @@ GLvoid RenderSystem::ReSizeGLScene(GLsizei width, GLsizei height)     // Resize 
 
 void RenderSystem::SetHandle(HWND handle) {
 	wHandle = handle;
-	::MessageBox(0, L"Handle set.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	//::MessageBox(0, L"Handle set.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 }
 
 int RenderSystem::InitGL(GLvoid)                                      // All Setup For OpenGL Goes Here
@@ -135,7 +135,7 @@ void RenderSystem::BeginLoop() {
 	//RenderSetUp();
 	//Render();
 
-	::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
+	//::MessageBox(0, L"Thread split off.", L"Error", MB_ICONEXCLAMATION | MB_OK);
 	renderThread = std::thread(&RenderSystem::Render, this);
 	//RenderSetUp();
 	//while (1) {

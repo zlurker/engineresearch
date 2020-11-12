@@ -293,6 +293,8 @@ void CreateInspectorSystem(int nCmdShow) {
 
 	HWND inspectorWindow = GenerateWindow(wc, 0, 0, 0, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
 	SetWindowTextA(inspectorWindow, "Transform");
+
+	CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56, 10, 50, 18, inspectorWindow, 0, hInstance, 0);
 }
 
 
