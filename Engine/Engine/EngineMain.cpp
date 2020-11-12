@@ -226,7 +226,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	}*/
 
 	//AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
-	dwStyle = WS_OVERLAPPEDWINDOW | WS_CHILD | WS_CLIPSIBLINGS;
+	dwStyle =  WS_CHILD | WS_BORDER;
 
 	GenerateWindow(
 		wc,
@@ -291,7 +291,7 @@ void CreateInspectorSystem(int nCmdShow) {
 	WindowRect.top = (long)0;             // Set Top Value To 0
 	WindowRect.bottom = (long)600;     // Set Bottom Value To Requested Height
 
-	HWND inspectorWindow = GenerateWindow(wc, 0, WS_CHILD | WS_BORDER, 400, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
+	HWND inspectorWindow = GenerateWindow(wc, 0, WS_CHILD | WS_BORDER, 640, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
 	SetWindowTextA(inspectorWindow, "Transform");
 
 	HWND tb = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56, 10, 50, 18, inspectorWindow, 0, hInstance, 0);
