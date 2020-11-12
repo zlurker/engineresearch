@@ -3,6 +3,8 @@
 #include <gl\gl.h>          // Header File For The OpenGL32 Library
 #include <gl\glu.h> 
 #include <thread>
+#include <mutex>
+#include "Procedure.h"
 
 class RenderSystem {
 public:
@@ -18,6 +20,7 @@ public:
 	void SwapBuffers();
 	void BeginLoop();
 	void SetHandle(HWND handle);
+	int GetPoxX();
 	int width;
 	int height;
 

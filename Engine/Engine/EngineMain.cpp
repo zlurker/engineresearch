@@ -5,6 +5,7 @@
 #include "InspectorSystem.h"
 #include <thread>
 #include "Procedure.h"
+#include "GameObjectData.h"
 using namespace Win;
 
 HDC         hDC = NULL;       // Private GDI Device Context
@@ -21,6 +22,7 @@ bool    fullscreen = TRUE;    // Fullscreen Flag Set To Fullscreen Mode By Defau
 
 //LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);   // Declaration For WndProc
 //LRESULT CALLBACK MainWindowProc(HWND, UINT, WPARAM, LPARAM);
+
 
 
 
