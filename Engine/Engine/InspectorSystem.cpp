@@ -14,9 +14,19 @@ void InspectorSystem::InspectorThread()
 	while (true) {
 		TCHAR buff[1024];
 		GetWindowText(textbox, buff, 1024);
-		int pos =std::stoi(buff);
 
-		//OutputDebugString(buff);
+		int pos;
+		bool is_ok = false;
+		try {
+			pos = std::stoi(buff);
+			is_ok = true;
+		}
+		catch (int e) {
+
+		}
+
+		if (is_ok)
+			rS->SetPosX(pos);
 	}
 }
 

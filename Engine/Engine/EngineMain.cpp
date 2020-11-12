@@ -271,6 +271,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 
 void CreateInspectorSystem(int nCmdShow) {
 	iS = new InspectorSystem();
+	iS->SetRenderSystem(rS);
 
 	WNDCLASS    wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;   // Redraw On Size, And Own DC For Window.

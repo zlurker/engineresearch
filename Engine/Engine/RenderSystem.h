@@ -21,6 +21,7 @@ public:
 	void BeginLoop();
 	void SetHandle(HWND handle);
 	int GetPoxX();
+	void SetPosX(int x);
 	int width;
 	int height;
 

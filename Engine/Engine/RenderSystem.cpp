@@ -47,7 +47,11 @@ int RenderSystem::InitGL(GLvoid)                                      // All Set
 int RenderSystem::GetPoxX() {
 	std::lock_guard<std::mutex> lock(lock);
 	return posX;
-	return 0;
+}
+
+void RenderSystem::SetPosX(int x) {
+	std::lock_guard<std::mutex> lock(lock);
+	posX = x;
 }
 
 bool RenderSystem::RenderSetUp() {
