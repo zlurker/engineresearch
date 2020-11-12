@@ -24,6 +24,9 @@ public:
 	int width;
 	int height;
 
+	int posX;
+	std::mutex lock;
+
 	HWND wHandle;
 	HDC hdc;
 	HGLRC hrc;
