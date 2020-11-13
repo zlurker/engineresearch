@@ -2,6 +2,9 @@
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
 	pos = new int[3];
+	pos[0] = 0;
+	pos[1] = 0;
+	pos[2] = 0;
 }
 
 RenderSystem::~RenderSystem() {
@@ -187,7 +190,7 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
 	glLoadIdentity();									// Reset the current modelview matrix
-	glTranslatef(0, 0, -7);						// Move right 1.5 units and into the screen 7.0
+	glTranslatef(GetPos(0), 0, -7);						// Move right 1.5 units and into the screen 7.0
 	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis 
 	glBegin(GL_QUADS);									// Draw a quad
 	glColor3f(0.0f, 1.0f, 0.0f);						// Set The color to green
