@@ -11,16 +11,17 @@ InspectorSystem::~InspectorSystem()
 
 void InspectorSystem::InspectorThread()
 {
-	while (true) {
+
+	while (true)
 		for (int i = 0; i < 3; i++) {
 			TCHAR buff[1024];
 			GetWindowText(transformPosUi[i], buff, 1024);
 			TCHAR test[1024];
-			swprintf(test, 1024, L"%s %d %s end",L"This is", i,buff);
+			swprintf(test, 1024, L"%s %d %s end", L"This is", i, buff);
 
 			OutputDebugString(test);
 			//OutputDebugString(buff);
-			
+
 
 			try {
 				int pos = std::stoi(buff);
@@ -34,7 +35,7 @@ void InspectorSystem::InspectorThread()
 			}
 			catch (const std::out_of_range& e) {}
 		}
-	}
+
 }
 
 void InspectorSystem::StartInspectorThread()
@@ -43,12 +44,13 @@ void InspectorSystem::StartInspectorThread()
 }
 
 void InspectorSystem::SetTextBox(HWND* tb) {
-	transformPosUi = tb;
+	//transformPosUi = tb;
+	transformPosUi = new HWND[3];
 
-	for (int i = 0; i < 2; i++)
-		SetWindowText(tb[i], L"0");
-
-	SetWindowText(tb[2], L"-7");
+	for (int i = 0; i < 3; i++) {
+		transformPosUi[i] = tb[i];
+		SetWindowText(transformPosUi[i], L"0");
+	}
 }
 
 void InspectorSystem::SetRenderSystem(RenderSystem* renderer) {
