@@ -13,10 +13,11 @@ public:
 
 	void InspectorThread();
 	void StartInspectorThread();
-	void SetTextBox(HWND tb);
+	void SetTextBox(HWND* tb);
 	void SetRenderSystem(RenderSystem* renderer);
 
 	HWND textbox;
+	HWND* transformPosUi;
 	std::thread inspectorThread;
 	RenderSystem* rS;
 	//RenderSystem rS;

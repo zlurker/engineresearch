@@ -225,7 +225,7 @@ BOOL CreateGLWindow(int width, int height, int bits, int nCmdShow)
 	}*/
 
 	//AdjustWindowRectEx(&WindowRect, dwStyle, FALSE, dwExStyle);     // Adjust Window To True Requested Size
-	dwStyle =  WS_CHILD | WS_BORDER;
+	dwStyle = WS_CHILD | WS_BORDER;
 
 	GenerateWindow(
 		wc,
@@ -294,10 +294,14 @@ void CreateInspectorSystem(int nCmdShow) {
 	HWND inspectorWindow = GenerateWindow(wc, 0, WS_CHILD | WS_BORDER, 640, 0, WindowRect.right - WindowRect.left, WindowRect.bottom - WindowRect.top, mainWindow, nCmdShow, NULL);
 	SetWindowTextA(inspectorWindow, "Transform");
 
-	HWND tb = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56, 10, 50, 18, inspectorWindow, 0, hInstance, 0);
-	SetFocus(tb);
-	//CreateWindow(L"BUTTON", 0, WS_CHILD | WS_VISIBLE, 70, 70, 80, 25, inspectorWindow, 0, hInstance, 0);
-	iS->SetTextBox(tb);
+	HWND tbs[3];
+
+	for (int i = 0; i < 3; i++)
+		tbs[i] = CreateWindow(L"EDIT", 0, WS_BORDER | WS_CHILD | WS_VISIBLE, 56 + (i * 60), 10, 50, 18, inspectorWindow, 0, hInstance, 0);
+	//SetFocus(tb[i]);
+
+//CreateWindow(L"BUTTON", 0, WS_CHILD | WS_VISIBLE, 70, 70, 80, 25, inspectorWindow, 0, hInstance, 0);
+	iS->SetTextBox(tbs);
 	iS->StartInspectorThread();
 }
 
