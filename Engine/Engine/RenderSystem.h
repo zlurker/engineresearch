@@ -20,12 +20,12 @@ public:
 	void SwapBuffers();
 	void BeginLoop();
 	void SetHandle(HWND handle);
-	int GetPoxX();
-	void SetPosX(int x);
+	int GetPos(int c);
+	void SetPos(int x,int c);
 	int width;
 	int height;
 
-	int posX;
+	int* pos;
 	std::mutex lock;
 
 	HWND wHandle;

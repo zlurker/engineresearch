@@ -1,7 +1,7 @@
 #include "RenderSystem.h"
 
 RenderSystem::RenderSystem(int w, int h) : width(w), height(h) {
-
+	pos = new int[3];
 }
 
 RenderSystem::~RenderSystem() {
@@ -44,14 +44,14 @@ int RenderSystem::InitGL(GLvoid)                                      // All Set
 }
 
 
-int RenderSystem::GetPoxX() {
+int RenderSystem::GetPos(int c) {
 	std::lock_guard<std::mutex> lock(lock);
-	return posX;
+	return pos[c];
 }
 
-void RenderSystem::SetPosX(int x) {
+void RenderSystem::SetPos(int x, int c) {
 	std::lock_guard<std::mutex> lock(lock);
-	posX = x;
+	pos[c] = x;
 }
 
 bool RenderSystem::RenderSetUp() {
@@ -187,7 +187,7 @@ void RenderSystem::Draw(GLvoid) {
 	glVertex3f(-1.0f, -1.0f, 1.0f);					// Right of triangle (left)
 	glEnd();		*/									// Done drawing the pyramid
 	glLoadIdentity();									// Reset the current modelview matrix
-	glTranslatef(GetPoxX(), 0.0f, -7.0f);						// Move right 1.5 units and into the screen 7.0
+	glTranslatef(0, 0, -7);						// Move right 1.5 units and into the screen 7.0
 	glRotatef(20, 20, 20, 1.0f);					// Rotate the quad on the x axis 
 	glBegin(GL_QUADS);									// Draw a quad
 	glColor3f(0.0f, 1.0f, 0.0f);						// Set The color to green
